@@ -17,10 +17,14 @@ import java.util.List;
 //@RequestMapping("recruMe")
 @RequestMapping("applicants")
 public class ApplicantController {
-    @Autowired
     private ApplicantsReader applicantsReader;
-    @Autowired
     private ApplicantService applicantService;
+
+    @Autowired
+    public ApplicantController(ApplicantsReader applicantsReader, ApplicantService applicantService){
+        this.applicantsReader = applicantsReader;
+        this.applicantService = applicantService;
+    }
 
     @GetMapping
     public String welcome(){

@@ -11,8 +11,12 @@ import java.util.List;
 
 @Service
 public class ApplicantService {
-    @Autowired
     private ApplicantsRepository applicantsRepo;
+
+    @Autowired
+    public ApplicantService(ApplicantsRepository applicantsRepo){
+        this.applicantsRepo = applicantsRepo;
+    }
 
     public List<Applicant> getApplicantsByAgeRange(int ageFrom, int ageTo) {
 //    /20,40
@@ -23,7 +27,6 @@ public class ApplicantService {
         System.out.println(yearTo);
         System.out.println("==========================");
         return applicantsRepo.getByAgeRange(yearTo, yearFrom);
-
 
     }
 }

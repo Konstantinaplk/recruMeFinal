@@ -13,12 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("skill")
 public class SkillController {
-
-    @Autowired
     private SkillService skillService;
-    @Autowired
     private SkillsReader skillsReader;
 
+    @Autowired
+    public SkillController(SkillService skillService, SkillsReader skillsReader){
+        this.skillService = skillService;
+        this.skillsReader = skillsReader;
+    }
     @GetMapping("readExcel")
     public List<Skill> getSkills() throws IOException {
         return skillsReader.readExcel("skills.xlsx");

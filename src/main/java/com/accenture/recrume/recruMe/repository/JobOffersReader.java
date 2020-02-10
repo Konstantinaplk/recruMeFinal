@@ -24,12 +24,12 @@ import java.util.List;
 @Data
 @Service
 public class JobOffersReader {
-    @Autowired
     private JobOffersRepository jobOffersRepo;
 
     public JobOffersReader() {
     }
 
+    @Autowired
     public JobOffersReader(JobOffersRepository jobOffersRepo){
         this.jobOffersRepo = jobOffersRepo;
     }

@@ -15,13 +15,18 @@ import java.util.List;
 
 @Service
 public class JobOfferService {
-    @Autowired
     private JobOffersRepository jobOffersRepo;
-    @Autowired
     private JobSkillsRepository jobSkillsRepo;
-    @Autowired
     private SkillsRepository skillsRepo;
 
+
+    @Autowired
+    public JobOfferService(JobOffersRepository jobOffersRepo,
+                           JobSkillsRepository jobSkillsRepo, SkillsRepository skillsRepo) {
+        this.jobOffersRepo = jobOffersRepo;
+        this.jobSkillsRepo = jobSkillsRepo;
+        this.skillsRepo = skillsRepo;
+    }
     /**
      * Reads data from frontend to create a new JobOffer Object and its skills to store in JobSkill table.
      * @param jobOfferDto Dto Object to get data for a new JobOffer
@@ -40,7 +45,7 @@ public class JobOfferService {
     }
 
     /**
-     * 
+     *
      * @param jobOfferDto
      * @param jobOffer
      */
@@ -87,7 +92,7 @@ public class JobOfferService {
         return jobOffersRepo.save(jobOffer);
     }
 
-    public void updateJobOfferSkill(SkillDto skillDto, int id, String name){
+    public void updateJobOfferSkill(SkillDto skillDto, int id, String name) {
         Skill skill = skillsRepo.findSkillByName(name);
         JobSkill jobSkill = jobSkillsRepo.getJobSkill(id, skill.getId());
         Skill skilldto = skillsRepo.findSkillByName(skillDto.getName());
