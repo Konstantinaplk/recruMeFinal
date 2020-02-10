@@ -112,6 +112,10 @@ public class JobOfferController {
         );
     }
 
+    /**
+     * GET Endpoint which returns the existed active JobOffers.
+     * @return list of active JobOffer objects
+     */
     @GetMapping("activeJobOffers")
     public List<JobOffer> getActiveJobOffers(){
         return jobOfferService.getActiveJobOffers();
