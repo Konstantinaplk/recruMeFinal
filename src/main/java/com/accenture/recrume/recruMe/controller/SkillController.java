@@ -21,27 +21,53 @@ public class SkillController {
         this.skillService = skillService;
         this.skillsReader = skillsReader;
     }
+
+    /**
+     *GET Endpoint which returns a json with the skills imported from excel.
+     * @return list of skills
+     * @throws IOException when the excel file wasn't found
+     */
     @GetMapping("readExcel")
     public List<Skill> getSkills() throws IOException {
         return skillsReader.readExcel("skills.xlsx");
     }
 
+    /**
+     *POST Endpoint which reads a DtoSkill object and add it in Skill Table.
+     * @param skillDto Dto SkillObject (fields: String name)
+     *                 to get data from a new Skill.
+     */
     @PostMapping("add")
     public void addSkill(@RequestBody SkillDto skillDto){
         skillService.addSkill(skillDto);
     }
 
+    /**
+     * Post Endpoint which reads a String name of an existed skill and
+     * deleted from the Skill Table.
+     * @param name String which represents the name of a skill
+     */
     @PostMapping("delete")
     public void deleteSkill(@RequestBody String name){
         skillService.deleteSkill(name);
     }
 
+    /**
+     * PUT Endpoint which reads the id of an existed skill and update its name
+     * using the inserted body Dto Skill object.
+     * @param id Integer which represents the id of an existed skill
+     * @param skillDto which represents a Dto skillObject (fields: name)
+     */
     @PutMapping("{id}")
     public void updateSkill(@PathVariable int id,
                             @RequestBody SkillDto skillDto){
         skillService.updateSkill(id, skillDto);
     }
 
+    /**
+     * GET Endpoint which get all the skill stored in Skill Table
+     * @return list of all stored skills
+     */
     @GetMapping("all")
     public List<Skill> getAllSkills(){
         return skillService.getAll();
