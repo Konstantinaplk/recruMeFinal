@@ -18,14 +18,18 @@ public class JobOfferService {
     private JobOffersRepository jobOffersRepo;
     private JobSkillsRepository jobSkillsRepo;
     private SkillsRepository skillsRepo;
+    private SkillService skillService;
 
 
     @Autowired
     public JobOfferService(JobOffersRepository jobOffersRepo,
-                           JobSkillsRepository jobSkillsRepo, SkillsRepository skillsRepo) {
+                           JobSkillsRepository jobSkillsRepo,
+                           SkillsRepository skillsRepo,
+                           SkillService skillService) {
         this.jobOffersRepo = jobOffersRepo;
         this.jobSkillsRepo = jobSkillsRepo;
         this.skillsRepo = skillsRepo;
+        this.skillService = skillService;
     }
     /**
      * Reads data from frontend to create a new JobOffer Object and its skills to store in JobSkill table.
@@ -40,45 +44,61 @@ public class JobOfferService {
         jobOffer.setStatus(Status.ACTIVE);
         jobOffer.setEducationLevel((jobOfferDto.getEducationLevel()));
         jobOffersRepo.save(jobOffer);
-        readJobOfferSkills(jobOfferDto, jobOffer);
+        for (Skill skill : jobOfferDto.getSkills()) {
+            readJobOfferSkill(skill, jobOffer);
+        }
         return jobOffer;
     }
 
     /**
-     *
-     * @param jobOfferDto
-     * @param jobOffer
+     * Reads from frontend a JobOffer and one of its skills to store this match in JobSkill table
+     * @param skill Read a skill
+     * @param jobOffer read a JobOffer
      */
-    public void readJobOfferSkills(JobOfferDto jobOfferDto, JobOffer jobOffer){
-        for (Skill skill : jobOfferDto.getSkills()) {
+    public void readJobOfferSkill(Skill skill, JobOffer jobOffer){
             JobSkill jobSkill = new JobSkill();
             jobSkill.setJobOfferId(jobOffer);
-            Skill dbSkill = skillsRepo.findSkillByName(skill.getName());
-            if (dbSkill == null) {
-                skillsRepo.save(skill);
-                jobSkill.setSkillId(skill);
-            } else {
-                jobSkill.setSkillId(dbSkill);
-            }
+            String name = skill.getName();
+            skillService.skillExist(name);
+            jobSkill.setSkillId(skill);
             jobSkillsRepo.save(jobSkill);
-        }
     }
 
+    /**
+     * Returns a list of JobOffers which are in the same Region
+     * @param region String to get the region
+     * @return
+     */
     public List<JobOffer> getByRegion(String region) {
         return jobOffersRepo.findByRegion(Region.valueOf(region).getValueToDb());
     }
 
-    public void setInactive(int id) {
+    /**
+     * Convert an active Job offer to inactive status/mode and saves it.
+     * @param id Integer which represent the id of a JobOffer.
+     */
+    public void setJobOfferInactive(int id) {
         JobOffer jobOffer = new JobOffer();
         jobOffer = jobOffersRepo.findById(id).get();
         jobOffer.setStatus(Status.INACTIVE);
         jobOffersRepo.save(jobOffer);
     }
 
+    /**
+     * Returns a JobOffer with a specific id.
+     * @param id Integer which represents a JobOffer's id.
+     * @return the JobOffer with this id
+     */
     public JobOffer getJobOffer(int id) {
         return jobOffersRepo.findById(id).get();
     }
 
+    /**
+     * Reads data from frontend to update a JobOffer Object and restore in it JobOffer table.
+     * @param id Integer which represents a JobOffer's id.
+     * @param jobOfferDto Dto JobOffer Object to get the updated fields.
+     * @return the updated JobOffer
+     */
     public JobOffer updateJobOffer(int id, JobOfferDto jobOfferDto) {
         JobOffer jobOffer;
         jobOffer = jobOffersRepo.findById(id).get();
@@ -92,23 +112,44 @@ public class JobOfferService {
         return jobOffersRepo.save(jobOffer);
     }
 
+    /**
+     * Reads an other Skill from frontend to update a JobSkill Object and restore in it JobSkill table.
+     * @param skillDto Dto Skill Object to get the new Skill to replace the old.
+     * @param id Integer which represents the id of a JobOffer
+     * @param name The name of the existing Skill, which is going to change.
+     */
     public void updateJobOfferSkill(SkillDto skillDto, int id, String name) {
         Skill skill = skillsRepo.findSkillByName(name);
         JobSkill jobSkill = jobSkillsRepo.getJobSkill(id, skill.getId());
-        Skill skilldto = skillsRepo.findSkillByName(skillDto.getName());
-
-        jobSkill.setSkillId(skilldto);
+        skillService.skillExist(skillDto.getName());
+        jobSkill.setSkillId(skillsRepo.findSkillByName(skillDto.getName()));
         jobSkillsRepo.save(jobSkill);
     }
 
+    /**
+     * Return a list of JobOffer which are from a specific Company.
+     * @param company String which represents the Company Name of a JobOffer.
+     * @return A list of JobOffer
+     */
     public List<JobOffer> getByCompany(String company) {
         return jobOffersRepo.findByCompany(company);
     }
 
+    /**
+     *
+     * @return a list of JobOffer which are Active in Status.
+     */
     public List<JobOffer> getActiveJobOffers() {
         return jobOffersRepo.findByStatus();
     }
 
+    /**
+     * Give a list of JobOffer which submitted after a specific date until today.
+     * @param day Integer which represents the day of the month for the date.
+     * @param month Integer which represents the month of the year for the date.
+     * @param year Integer which represents the year for the date.
+     * @return A list of JobOffer.
+     */
     public List<JobOffer> getJobOfferByDate(int day, int month, int year) {
         long today = GregorianCalendar.getInstance().getTimeInMillis();
         System.out.println(today);

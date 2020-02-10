@@ -1,6 +1,7 @@
 package com.accenture.recrume.recruMe.service;
 
 import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.model.JobSkill;
 import com.accenture.recrume.recruMe.model.Skill;
 import com.accenture.recrume.recruMe.repository.SkillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,4 +67,15 @@ public class SkillService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Check if a skill name exists in Skill Table, otherwise it saves it.
+     * @param name Read a skillname
+     */
+    public void skillExist(String name) {
+        Skill dbSkill = skillRepo.findSkillByName(name);
+        if (dbSkill == null) {
+            skillRepo.save(new Skill(name));
+        }
+    }
 }
