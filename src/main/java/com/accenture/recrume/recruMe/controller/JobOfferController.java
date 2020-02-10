@@ -131,7 +131,13 @@ public class JobOfferController {
     @GetMapping("date/day/{day}/month/{month}/year/{year}")
     public List<JobOffer> getJobOffersByDate(@PathVariable int day, @PathVariable int month, @PathVariable int year){
         return jobOfferService.getJobOfferByDate(day, month, year);
-    };
+    }
+
+    @GetMapping("skill/{skillName}")
+    public List<JobOffer> getJobOffersBySkill(@PathVariable String skillName){
+        return jobOfferService.getJobOfferBySkill(skillName);
+    }
+
 
 
 

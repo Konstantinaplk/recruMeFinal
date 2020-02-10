@@ -1,9 +1,6 @@
 package com.accenture.recrume.recruMe.dtos;
 
-import com.accenture.recrume.recruMe.model.EducationLevel;
-import com.accenture.recrume.recruMe.model.Region;
-import com.accenture.recrume.recruMe.model.Skill;
-import com.accenture.recrume.recruMe.model.Status;
+import com.accenture.recrume.recruMe.model.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +13,7 @@ public class JobOfferDto {
     private Region region;
     private String title;
     private EducationLevel educationLevel;
+    private ProfessionalLevel professionalLevel;
     private long dateSubmitted;
     private Status status;
     private List<Skill> skills;

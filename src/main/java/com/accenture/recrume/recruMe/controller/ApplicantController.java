@@ -31,7 +31,7 @@ public class ApplicantController {
         return "<b>Welcome to recruMe!</b>";
     }
 
-    @GetMapping("all")
+    @GetMapping("readExcel")
     public List<Applicant> getApplicants() throws IOException {
 
         return applicantsReader.readExcel("applicants.xlsx");

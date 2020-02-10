@@ -1,6 +1,8 @@
 package com.accenture.recrume.recruMe.service;
 
 import com.accenture.recrume.recruMe.model.Applicant;
+import com.accenture.recrume.recruMe.model.JobOffer;
+import com.accenture.recrume.recruMe.model.Status;
 import com.accenture.recrume.recruMe.repository.ApplicantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,12 @@ public class ApplicantService {
         System.out.println(yearTo);
         System.out.println("==========================");
         return applicantsRepo.getByAgeRange(yearTo, yearFrom);
+    }
 
+    Applicant applicant = new Applicant();
+    public void setApplicantInactive(int appId) {
+        applicant = applicantsRepo.getApplicantById(appId);
+        applicant.setStatus(Status.INACTIVE);
+        applicantsRepo.save(applicant);
     }
 }

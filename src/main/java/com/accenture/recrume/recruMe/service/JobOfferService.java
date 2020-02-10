@@ -9,6 +9,7 @@ import com.accenture.recrume.recruMe.repository.SkillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -43,6 +44,7 @@ public class JobOfferService {
         jobOffer.setRegion(jobOfferDto.getRegion());
         jobOffer.setStatus(Status.ACTIVE);
         jobOffer.setEducationLevel((jobOfferDto.getEducationLevel()));
+        jobOffer.setProfessionalLevel(jobOfferDto.getProfessionalLevel());
         jobOffersRepo.save(jobOffer);
         for (Skill skill : jobOfferDto.getSkills()) {
             readJobOfferSkill(skill, jobOffer);
@@ -57,10 +59,10 @@ public class JobOfferService {
      */
     public void readJobOfferSkill(Skill skill, JobOffer jobOffer){
             JobSkill jobSkill = new JobSkill();
-            jobSkill.setJobOfferId(jobOffer);
+            jobSkill.setJobOffer(jobOffer);
             String name = skill.getName();
-            skillService.skillExist(name);
-            jobSkill.setSkillId(skill);
+//            skillService.skillExist(name);
+            jobSkill.setSkill(skill);
             jobSkillsRepo.save(jobSkill);
     }
 
@@ -79,7 +81,7 @@ public class JobOfferService {
      */
     public void setJobOfferInactive(int id) {
         JobOffer jobOffer = new JobOffer();
-        jobOffer = jobOffersRepo.findById(id).get();
+        jobOffer = jobOffersRepo.findById(id);
         jobOffer.setStatus(Status.INACTIVE);
         jobOffersRepo.save(jobOffer);
     }
@@ -90,7 +92,7 @@ public class JobOfferService {
      * @return the JobOffer with this id
      */
     public JobOffer getJobOffer(int id) {
-        return jobOffersRepo.findById(id).get();
+        return jobOffersRepo.findById(id);
     }
 
     /**
@@ -101,10 +103,11 @@ public class JobOfferService {
      */
     public JobOffer updateJobOffer(int id, JobOfferDto jobOfferDto) {
         JobOffer jobOffer;
-        jobOffer = jobOffersRepo.findById(id).get();
+        jobOffer = jobOffersRepo.findById(id);
         jobOffer.setCompany(jobOfferDto.getCompany());
         jobOffer.setStatus(jobOffer.getStatus());
         jobOffer.setEducationLevel(jobOfferDto.getEducationLevel());
+        jobOffer.setProfessionalLevel(jobOfferDto.getProfessionalLevel());
         jobOffer.setRegion(jobOfferDto.getRegion());
         jobOffer.setDateSubmitted(jobOfferDto.getDateSubmitted());
         jobOffer.setTitle(jobOfferDto.getTitle());
@@ -122,7 +125,7 @@ public class JobOfferService {
         Skill skill = skillsRepo.findSkillByName(name);
         JobSkill jobSkill = jobSkillsRepo.getJobSkill(id, skill.getId());
         skillService.skillExist(skillDto.getName());
-        jobSkill.setSkillId(skillsRepo.findSkillByName(skillDto.getName()));
+        jobSkill.setSkill(skillsRepo.findSkillByName(skillDto.getName()));
         jobSkillsRepo.save(jobSkill);
     }
 
@@ -161,6 +164,15 @@ public class JobOfferService {
 
         long certainDate = certainDay.getTimeInMillis();
         return jobOffersRepo.findByDate(today, certainDate);
+    }
 
+    public List<JobOffer> getJobOfferBySkill(String skillName) {
+        Skill skill = skillsRepo.findSkillByName(skillName);
+        List<Integer> jobOfferIdList = jobSkillsRepo.getJobOfferBySkill(skill.getId());
+        List<JobOffer> jobOfferList = new ArrayList<>();
+        for (Integer jobOfferId:jobOfferIdList){
+            jobOfferList.add(jobOffersRepo.findById(jobOfferId).get());
+        }
+        return jobOfferList;
     }
 }

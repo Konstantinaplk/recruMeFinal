@@ -14,8 +14,8 @@ public class JobSkill {
     private int id;
     @ManyToOne
     @JoinColumn
-    private JobOffer jobOfferId;
+    private JobOffer jobOffer;
     @ManyToOne
     @JoinColumn
-    private Skill skillId;
+    private Skill skill;
 }

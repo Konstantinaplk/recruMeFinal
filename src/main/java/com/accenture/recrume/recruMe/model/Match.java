@@ -2,6 +2,7 @@ package com.accenture.recrume.recruMe.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -13,10 +14,10 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    private Applicant appId;
+    private Applicant applicant;
     @ManyToOne
-    private  JobOffer jobId;
+    private  JobOffer jobOffer;
 
-    private Finalize finalize;
+    private MatchStatus matchStatus;
     private MatchType matchType;
 }

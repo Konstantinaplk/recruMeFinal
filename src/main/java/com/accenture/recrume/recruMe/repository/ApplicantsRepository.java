@@ -14,5 +14,8 @@ public interface ApplicantsRepository<nativeQuery> extends JpaRepository<Applica
     @Query(value = "select * from applicant where yob >= :yearFrom and yob <= :yearTo", nativeQuery = true)
     List<Applicant> getByAgeRange(@Param("yearTo") int yearTo, @Param("yearFrom") int yearFrom);
 
+    @Query(value = "select * from applicant where id =:appId", nativeQuery = true)
+    Applicant getApplicantById(@Param("appId") int appId);
+
 }
 

@@ -1,12 +1,13 @@
 package com.accenture.recrume.recruMe.model;
 
-public enum Finalize {
-    TRUE("T"),
-    FALSE("F");
+public enum MatchStatus {
+    UNFINALIZED("0"),
+    FINALIZED("1"),
+    DELETED("2");
 
     private String dbValue;
 
-    Finalize(String dbValue){
+    MatchStatus(String dbValue){
         this.dbValue = dbValue;
     }
 

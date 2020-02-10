@@ -2,6 +2,7 @@ package com.accenture.recrume.recruMe.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,15 +21,17 @@ public class JobOffer {
     private int id;
     private String title;
     private EducationLevel educationLevel;
+    private ProfessionalLevel professionalLevel;
     private String company;
     private long dateSubmitted;
     private Status status;
     private Region region;
 
 
-    public JobOffer(String title, EducationLevel educationLevel, String company, Status status, Region region, Calendar dateSubmitted) {
+    public JobOffer(String title, EducationLevel educationLevel, ProfessionalLevel professionalLevel, String company, Status status, Region region, Calendar dateSubmitted) {
         this.title = title;
         this.educationLevel = educationLevel;
+        this.professionalLevel = professionalLevel;
         this.company = company;
         this.status = status;
         this.region = region;

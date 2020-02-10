@@ -20,6 +20,9 @@ public interface JobOffersRepository extends CrudRepository<JobOffer, Integer> {
     @Query(value = "select * from job_offer where status = 1",nativeQuery = true)
     List<JobOffer> findByStatus();
 
-    @Query(value = "select * from Job_offer where date_submitted <= :today and date_submitted > :certainDate", nativeQuery = true)
+    @Query(value = "select * from job_offer where date_submitted <= :today and date_submitted > :certainDate", nativeQuery = true)
     List<JobOffer> findByDate(@Param("today") long today, @Param("certainDate") long certainDate);
+
+    @Query(value = "select * from job_offer where id=:jobOfferId", nativeQuery = true)
+    JobOffer findById(@Param("jobOfferId") int jobOfferId);
 }

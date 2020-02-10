@@ -1,10 +1,7 @@
 package com.accenture.recrume.recruMe.repository;
 
 import com.accenture.recrume.recruMe.exception.ExcelFileNotFoundException;
-import com.accenture.recrume.recruMe.model.EducationLevel;
-import com.accenture.recrume.recruMe.model.JobOffer;
-import com.accenture.recrume.recruMe.model.Region;
-import com.accenture.recrume.recruMe.model.Status;
+import com.accenture.recrume.recruMe.model.*;
 import lombok.Data;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -50,6 +47,7 @@ public class JobOffersReader {
 
             Cell titleCell = cellIterator.next();
             Cell educationLevelCell = cellIterator.next();
+            Cell professionalLeveCell = cellIterator.next();
             Cell companyCell = cellIterator.next();
             Cell regionCell = cellIterator.next();
 
@@ -57,6 +55,7 @@ public class JobOffersReader {
             JobOffer jobOffer = new JobOffer(
                     titleCell.getStringCellValue(),
                     EducationLevel.valueOf(educationLevelCell.getStringCellValue()),
+                    ProfessionalLevel.valueOf(professionalLeveCell.getStringCellValue()),
                     companyCell.getStringCellValue(),
                     Status.ACTIVE,
                     Region.valueOf(regionCell.getStringCellValue()),
