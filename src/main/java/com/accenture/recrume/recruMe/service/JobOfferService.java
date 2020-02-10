@@ -22,6 +22,11 @@ public class JobOfferService {
     @Autowired
     private SkillsRepository skillsRepo;
 
+    /**
+     * Reads data from frontend to create a new JobOffer Object and its skills to store in JobSkill table.
+     * @param jobOfferDto Dto Object to get data for a new JobOffer
+     * @return Job offer just saved without its skills
+     */
     public JobOffer addJobOffer(JobOfferDto jobOfferDto) {
         JobOffer jobOffer = new JobOffer();
         jobOffer.setCompany(jobOfferDto.getCompany());
@@ -34,6 +39,11 @@ public class JobOfferService {
         return jobOffer;
     }
 
+    /**
+     * 
+     * @param jobOfferDto
+     * @param jobOffer
+     */
     public void readJobOfferSkills(JobOfferDto jobOfferDto, JobOffer jobOffer){
         for (Skill skill : jobOfferDto.getSkills()) {
             JobSkill jobSkill = new JobSkill();
