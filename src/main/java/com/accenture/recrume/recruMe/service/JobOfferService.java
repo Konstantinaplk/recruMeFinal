@@ -15,12 +15,17 @@ import java.util.List;
 
 @Service
 public class JobOfferService {
-    @Autowired
     private JobOffersRepository jobOffersRepo;
-    @Autowired
     private JobSkillsRepository jobSkillsRepo;
-    @Autowired
     private SkillsRepository skillsRepo;
+
+    @Autowired
+    public JobOfferService(JobOffersRepository jobOffersRepo,
+                           JobSkillsRepository jobSkillsRepo, SkillsRepository skillsRepo) {
+        this.jobOffersRepo = jobOffersRepo;
+        this.jobSkillsRepo = jobSkillsRepo;
+        this.skillsRepo = skillsRepo;
+    }
 
     public JobOffer addJobOffer(JobOfferDto jobOfferDto) {
         JobOffer jobOffer = new JobOffer();
@@ -34,7 +39,7 @@ public class JobOfferService {
         return jobOffer;
     }
 
-    public void readJobOfferSkills(JobOfferDto jobOfferDto, JobOffer jobOffer){
+    public void readJobOfferSkills(JobOfferDto jobOfferDto, JobOffer jobOffer) {
         for (Skill skill : jobOfferDto.getSkills()) {
             JobSkill jobSkill = new JobSkill();
             jobSkill.setJobOfferId(jobOffer);
@@ -77,7 +82,7 @@ public class JobOfferService {
         return jobOffersRepo.save(jobOffer);
     }
 
-    public void updateJobOfferSkill(SkillDto skillDto, int id, String name){
+    public void updateJobOfferSkill(SkillDto skillDto, int id, String name) {
         Skill skill = skillsRepo.findSkillByName(name);
         JobSkill jobSkill = jobSkillsRepo.getJobSkill(id, skill.getId());
         Skill skilldto = skillsRepo.findSkillByName(skillDto.getName());

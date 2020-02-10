@@ -12,8 +12,12 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class SkillService {
-    @Autowired
     private SkillsRepository skillRepo;
+
+    @Autowired
+    public SkillService(SkillsRepository skillRepo){
+        this.skillRepo = skillRepo;
+    }
 
     public Skill addSkill(SkillDto skillDto) {
         Skill skill = new Skill();

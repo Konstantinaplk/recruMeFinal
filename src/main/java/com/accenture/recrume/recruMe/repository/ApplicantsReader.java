@@ -22,12 +22,12 @@ import java.util.List;
 @Data
 @Service
 public class ApplicantsReader {
-    @Autowired
     private ApplicantsRepository applicantsRepo;
 
     public ApplicantsReader() {
     }
 
+    @Autowired
     public ApplicantsReader(ApplicantsRepository applicantsRepo){
         this.applicantsRepo = applicantsRepo;
     }

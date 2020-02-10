@@ -20,13 +20,12 @@ import java.util.List;
 @Data
 @Service
 public class SkillsReader {
-
-    @Autowired
     private SkillsRepository skillsRepo;
 
     public SkillsReader() {
     }
 
+    @Autowired
     public SkillsReader(SkillsRepository skillsRepo){
         this.skillsRepo = skillsRepo;
     }

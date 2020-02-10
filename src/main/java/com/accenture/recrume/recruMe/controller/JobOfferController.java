@@ -14,13 +14,13 @@ import java.util.List;
 @RestController
 @RequestMapping("jobOffer")
 public class JobOfferController {
-
-    @Autowired
     private JobOfferService jobOfferService;
-    @Autowired
     private JobOffersReader jobOffersReader;
 
-    public JobOfferController() {
+    @Autowired
+    public JobOfferController(JobOfferService jobOfferService, JobOffersReader jobOffersReader) {
+        this.jobOfferService = jobOfferService;
+        this.jobOffersReader = jobOffersReader;
     }
 
     @GetMapping("readExcel")
