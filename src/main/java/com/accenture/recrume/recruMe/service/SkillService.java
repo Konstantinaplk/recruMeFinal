@@ -67,7 +67,6 @@ public class SkillService {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Check if a skill name exists in Skill Table, otherwise it saves it.
      * @param name Read a skillname
