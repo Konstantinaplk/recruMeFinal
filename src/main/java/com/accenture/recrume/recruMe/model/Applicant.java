@@ -22,14 +22,19 @@ public class Applicant {
     private Region region;
     @Column(columnDefinition = "bit default 1")
     private Status status;
+    private String address;
     private EducationLevel educationLevel;
+    private ProfessionalLevel professionalLevel;
 
-    public Applicant(String firstName, String lastName, int yob, Region region, EducationLevel educationLevel) {
+    public Applicant(String firstName, String lastName, String address,  Region region,
+            EducationLevel educationLevel, ProfessionalLevel professionalLevel, int yob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.yob = yob;
         this.region = region;
         this.status = Status.ACTIVE;
         this.educationLevel = educationLevel;
+        this.address = address;
+        this.professionalLevel = getProfessionalLevel();
     }
 }

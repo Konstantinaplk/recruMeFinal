@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApplicantDto {
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private int yob;
     private Region region;
     private Status status;
     private EducationLevel educationLevel;
+    private String address;
 }

@@ -21,18 +21,14 @@ public class ApplicantService {
     }
 
     public List<Applicant> getApplicantsByAgeRange(int ageFrom, int ageTo) {
-//    /20,40
         int thisYear = GregorianCalendar.getInstance().get(Calendar.YEAR);
-        int yearTo = thisYear - ageFrom; //2000
-        int yearFrom = thisYear - ageTo; //1980
-        System.out.println(yearFrom);
-        System.out.println(yearTo);
-        System.out.println("==========================");
+        int yearTo = thisYear - ageFrom;
+        int yearFrom = thisYear - ageTo;
         return applicantsRepo.getByAgeRange(yearTo, yearFrom);
     }
 
-    Applicant applicant = new Applicant();
     public void setApplicantInactive(int appId) {
+        Applicant applicant = new Applicant();
         applicant = applicantsRepo.getApplicantById(appId);
         applicant.setStatus(Status.INACTIVE);
         applicantsRepo.save(applicant);
