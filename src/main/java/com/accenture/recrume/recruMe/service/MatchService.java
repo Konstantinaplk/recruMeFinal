@@ -26,9 +26,9 @@ public class MatchService {
      /**
      * Manual match of an applicant and a jobOffer only if there are available. Update the Match Table
      * with a new unfinalized manual match.
-     * @param appId Integer which refers to the applicant's id
-     * @param jobOfferId Integer which refers to the jobOffer's id
-     * @throws MatchException when the applicant or the jobOffer is not active - available
+     * @param appId Integer which refers to the applicant's id.
+     * @param jobOfferId Integer which refers to the jobOffer's id.
+     * @throws MatchException when the applicant or the jobOffer is not active - available.
      */
     public void addManualMatch(int appId, int jobOfferId) throws MatchException {
         Match match = new Match();
@@ -46,9 +46,10 @@ public class MatchService {
     }
 
     /**
-     * takes an match id and execute a soft delete (field MatchStatus -> deleted) with the
+     * Takes an match id from the fronend and execute a soft delete
+     * (field MatchStatus -> deleted) with the
      * applicant and the jobOffer becoming Active again.
-     * @param matchId Integer which represents the id of a certain match
+     * @param matchId Integer which represents the id of a certain match.
      * @throws MatchNotFoundException when the match id doesn't exist.
      */
     public void deleteMatch(int matchId) throws MatchNotFoundException {
@@ -61,6 +62,12 @@ public class MatchService {
         jobOffer.setStatus(Status.ACTIVE);
     }
 
+
+    /**
+     * Takes a certain MatchId from the fronend and make its Status finalized.
+     * @param matchId Integer which refers to the Id of a certain match.
+     * @throws MatchNotFoundException when match doesn't exist.
+     */
     public void finalizeMatch(int matchId) throws MatchNotFoundException {
         Match match = matchesRepo.getMatchById(matchId);
         if(match == null){throw new MatchNotFoundException("There is no match with this Id");}

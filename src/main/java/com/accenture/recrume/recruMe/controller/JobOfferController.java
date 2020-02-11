@@ -37,8 +37,8 @@ public class JobOfferController {
     /**
      * POST endpoint which reads a Dto JobOffer Object, add it in JobOffer table and return it.
      * @param jobOfferDto Dto JobOfferObject (private String company; private Region region; private String title;
-     *                    private EducationLevel educationLevel; private long dateSubmitted; private Status status;
-     *                    private List<Skill> skills;) to get data for a new JobOffer.
+     * private EducationLevel educationLevel; private long dateSubmitted; private Status status;
+     * private List<Skill> skills;) to get data for a new JobOffer.
      * @return the new JobOffer
      */
     @PostMapping("add")
@@ -78,8 +78,8 @@ public class JobOfferController {
     /**
      * PUT endpoint which updates a specific JobOffer, found by its id and update fields by Dto JobOffer Object.
      * @param jobOfferDto Dto JobOffer Object (private String company; private Region region; private String title;
-     *                   private EducationLevel educationLevel; private long dateSubmitted; private Status status)
-     *        to get data for update a JobOffer.
+     * private EducationLevel educationLevel; private long dateSubmitted; private Status status)
+     * to get data for update a JobOffer.
      * @param id Integer which represents a specific existed JobOffer.
      * @return
      */
@@ -126,19 +126,20 @@ public class JobOfferController {
      * @param day Integer which represents the day of the month for the date, read from path.
      * @param month Integer which represents the month of the year for the date, read from path.
      * @param year Integer which represents the year for the date, read from path.
-     * @return
+     * @return A list of jobOffer objects.
      */
     @GetMapping("date/day/{day}/month/{month}/year/{year}")
     public List<JobOffer> getJobOffersByDate(@PathVariable int day, @PathVariable int month, @PathVariable int year){
         return jobOfferService.getJobOfferByDate(day, month, year);
     }
 
+    /**
+     * Get Endpoint which reads a name of skill and return JobOffer objects with the certain skill.
+     * @param skillName String which refers to the skill name.
+     * @return a list of JobOffers with a certain skill.
+     */
     @GetMapping("skill/{skillName}")
     public List<JobOffer> getJobOffersBySkill(@PathVariable String skillName){
         return jobOfferService.getJobOfferBySkill(skillName);
     }
-
-
-
-
 }

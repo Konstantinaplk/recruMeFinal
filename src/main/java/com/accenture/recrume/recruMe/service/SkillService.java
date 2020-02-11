@@ -21,10 +21,9 @@ public class SkillService {
     }
 
     /**
-     * read one new skill from the frondend and store it in Skill table
-     *
-     * @param skillDto Dto object to get data from a new Skill
-     * @return the skill stored in db
+     * Read one new skill from the frondend and store it in Skill table.
+     * @param skillDto Dto object to get data from a new Skill.
+     * @return The skill stored in db.
      */
     public Skill addSkill(SkillDto skillDto) {
         Skill skill = new Skill();
@@ -33,9 +32,8 @@ public class SkillService {
     }
 
     /**
-     * read a name skill from the frondend and delete it from Skill table
-     *
-     * @param name String of the skill name
+     * Read a name skill from the frondend and delete it from Skill table.
+     * @param name String of the skill name.
      */
     public void deleteSkill(String name) {
         Skill skill = new Skill();
@@ -44,11 +42,11 @@ public class SkillService {
     }
 
     /**
-     * change the name of an existed skill
-     *
-     * @param id       integer skill id which will be updated
-     * @param skillDto Dto with a new skill name
-     * @return the updated skill
+     * change the name of an existed skill with a certain skillDto object
+     * which is read from the frondend.
+     * @param id Integer skill id which will be updated.
+     * @param skillDto Dto skillObject with a new skill name (field: int name).
+     * @return The updated skill.
      */
     public Skill updateSkill(int id, SkillDto skillDto) {
         Skill skill = new Skill();
@@ -58,8 +56,8 @@ public class SkillService {
     }
 
     /**
-     * get all skills of Skill Table
-     * @return a list of Skills
+     * Get all skills of Skill Table.
+     * @return A list of Skills.
      */
     public List<Skill> getAll() {
         return StreamSupport
@@ -69,7 +67,7 @@ public class SkillService {
 
     /**
      * Check if a skill name exists in Skill Table, otherwise it saves it.
-     * @param name Read a skillname
+     * @param name String which refers to a certain skillName.
      */
     public void skillExist(String name) {
         Skill dbSkill = skillRepo.findSkillByName(name);

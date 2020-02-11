@@ -35,8 +35,8 @@ public class JobOfferService {
 
      /**
      * Reads data from frontend to create a new JobOffer Object and its skills to store in JobSkill table.
-     * @param jobOfferDto Dto Object to get data for a new JobOffer
-     * @return Job offer just saved without its skills
+     * @param jobOfferDto Dto Object to get data for a new JobOffer.
+     * @return Job offer just saved without its skills.
      */
     public JobOffer addJobOffer(JobOfferDto jobOfferDto) {
         JobOffer jobOffer = new JobOffer();
@@ -54,9 +54,9 @@ public class JobOfferService {
     }
 
     /**
-     * Reads from frontend a JobOffer and one of its skills to store this match in JobSkill table
-     * @param skill Read a skill
-     * @param jobOffer read a JobOffer
+     * Reads from frontend a JobOffer and one of its skills to store this match in JobSkill table.
+     * @param skill Read a skill.
+     * @param jobOffer read a JobOffer.
      */
     public void readJobOfferSkill(Skill skill, JobOffer jobOffer){
             JobSkill jobSkill = new JobSkill();
@@ -68,8 +68,8 @@ public class JobOfferService {
     }
 
     /**
-     * Returns a list of JobOffers which are in the same Region
-     * @param region String to get the region
+     * Returns a list of JobOffers which are in the same Region.
+     * @param region String to get the region.
      * @return
      */
     public List<JobOffer> getByRegion(String region) {
@@ -140,7 +140,6 @@ public class JobOfferService {
     }
 
     /**
-     *
      * @return a list of JobOffer which are Active in Status.
      */
     public List<JobOffer> getActiveJobOffers() {
@@ -156,8 +155,6 @@ public class JobOfferService {
      */
     public List<JobOffer> getJobOfferByDate(int day, int month, int year) {
         long today = GregorianCalendar.getInstance().getTimeInMillis();
-        System.out.println(today);
-        System.out.println("============================hgh");
         Calendar certainDay = GregorianCalendar.getInstance();
         certainDay.set(Calendar.YEAR, year);
         certainDay.set(Calendar.MONTH, month);
@@ -167,6 +164,11 @@ public class JobOfferService {
         return jobOffersRepo.findByDate(today, certainDate);
     }
 
+    /**
+     * Give a list of JobOffer objects that has a certain skill.
+     * @param skillName String which refers to the name of the skill.
+     * @return A list of JobOffers.
+     */
     public List<JobOffer> getJobOfferBySkill(String skillName) {
         Skill skill = skillsRepo.findSkillByName(skillName);
         List<Integer> jobOfferIdList = jobSkillsRepo.getJobOfferBySkill(skill.getId());
