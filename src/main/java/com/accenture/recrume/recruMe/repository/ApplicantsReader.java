@@ -2,6 +2,7 @@ package com.accenture.recrume.recruMe.repository;
 
 import com.accenture.recrume.recruMe.model.Applicant;
 import com.accenture.recrume.recruMe.model.EducationLevel;
+import com.accenture.recrume.recruMe.model.ProfessionalLevel;
 import com.accenture.recrume.recruMe.model.Region;
 import lombok.Data;
 import org.apache.poi.ss.usermodel.Cell;
@@ -23,6 +24,7 @@ import java.util.List;
 @Service
 public class ApplicantsReader {
     private ApplicantsRepository applicantsRepo;
+    private  final int NULL_YOB = 0;
 
     public ApplicantsReader() {
     }
@@ -46,18 +48,20 @@ public class ApplicantsReader {
 
             Cell firstNameCell = cellIterator.next();
             Cell lastNameCell = cellIterator.next();
-            Cell yobCell = cellIterator.next();
+            Cell addressCell = cellIterator.next();
             Cell regionCell = cellIterator.next();
             Cell educationLevelCell = cellIterator.next();
+            Cell professionalLevelCell = cellIterator.next();
 
             Applicant applicant = new Applicant(
                     firstNameCell.getStringCellValue(),
                     lastNameCell.getStringCellValue(),
-                    (int) yobCell.getNumericCellValue(),
+                    addressCell.getStringCellValue(),
                     Region.valueOf(regionCell.getStringCellValue()),
-                    EducationLevel.valueOf(educationLevelCell.getStringCellValue())
-
-            );
+                    EducationLevel.valueOf(educationLevelCell.getStringCellValue()),
+                    ProfessionalLevel.valueOf(professionalLevelCell.getStringCellValue()),
+                    NULL_YOB
+                    );
 
             applicants.add(applicant);
             applicantsRepo.save(applicant);
