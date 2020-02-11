@@ -56,6 +56,7 @@ public class ApplicantsReader {
                     (int) yobCell.getNumericCellValue(),
                     Region.valueOf(regionCell.getStringCellValue()),
                     EducationLevel.valueOf(educationLevelCell.getStringCellValue())
+
             );
 
             applicants.add(applicant);
