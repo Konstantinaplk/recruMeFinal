@@ -1,5 +1,6 @@
 package com.accenture.recrume.recruMe.controller;
 
+import com.accenture.recrume.recruMe.exception.JobOfferException;
 import com.accenture.recrume.recruMe.exception.MatchException;
 import com.accenture.recrume.recruMe.exception.MatchNotFoundException;
 import com.accenture.recrume.recruMe.service.MatchService;
@@ -49,9 +50,8 @@ public class MatchController {
         matchService.finalizeMatch(matchId);
     }
 
-    @PostMapping("automaticMatch/{jobOfferId}")
-    public void automaticMatch(@PathVariable int jobOfferId) throws MatchException {
-        matchService.automaticMatch(jobOfferId);
+    @PostMapping("createAutomaticMatches")
+    public void automaticMatch() throws MatchException, JobOfferException {
+        matchService.createAutomaticMatches();
     }
-
 }

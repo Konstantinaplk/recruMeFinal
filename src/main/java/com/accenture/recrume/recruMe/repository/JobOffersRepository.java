@@ -25,4 +25,7 @@ public interface JobOffersRepository extends CrudRepository<JobOffer, Integer> {
 
     @Query(value = "select * from job_offer where id=:jobOfferId", nativeQuery = true)
     JobOffer findById(@Param("jobOfferId") int jobOfferId);
+
+    @Query(value = "select id from job_offer where status = 1", nativeQuery = true)
+    List<Integer> getActiveJobOfferId();
 }
