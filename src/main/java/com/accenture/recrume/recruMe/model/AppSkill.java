@@ -13,7 +13,7 @@ public class AppSkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    private Applicant appId;
+    private Applicant applicant;
     @ManyToOne
-    private Skill skillId;
+    private Skill skill;
 }

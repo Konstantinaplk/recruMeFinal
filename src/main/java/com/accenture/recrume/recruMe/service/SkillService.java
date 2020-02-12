@@ -3,6 +3,7 @@ package com.accenture.recrume.recruMe.service;
 import com.accenture.recrume.recruMe.dtos.SkillDto;
 import com.accenture.recrume.recruMe.model.JobSkill;
 import com.accenture.recrume.recruMe.model.Skill;
+import com.accenture.recrume.recruMe.repository.JobSkillsRepository;
 import com.accenture.recrume.recruMe.repository.SkillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,12 @@ import java.util.stream.StreamSupport;
 @Service
 public class SkillService {
     private SkillsRepository skillRepo;
+    private JobSkillsRepository jobSkillsRepo;
 
     @Autowired
-    public SkillService(SkillsRepository skillRepo) {
+    public SkillService(SkillsRepository skillRepo,  JobSkillsRepository jobSkillsRepo) {
         this.skillRepo = skillRepo;
+        this.jobSkillsRepo = jobSkillsRepo;
     }
 
     /**
@@ -74,5 +77,32 @@ public class SkillService {
         if (dbSkill == null) {
             skillRepo.save(new Skill(name));
         }
+    }
+
+    private int max;
+    private Skill topSkill;
+
+    public Skill chechSkill(int skillId){
+        int i = 0;
+        for (JobSkill jobSkill:jobSkillsRepo.findAll()){
+            if (jobSkill.getSkill().getId()==skillId){
+                i += 1;
+            }
+        }
+        if (i>max){
+            max = i;
+            topSkill = skillRepo.findById(skillId).get();
+
+        }
+        return topSkill;
+    }
+
+    public Skill gettopSkill(){
+        max = 0;
+        for (Skill skill:skillRepo.findAll()){
+
+            chechSkill(skill.getId());
+        }
+        return topSkill;
     }
 }

@@ -7,6 +7,9 @@ import com.accenture.recrume.recruMe.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class MatchService {
 
@@ -15,12 +18,14 @@ public class MatchService {
     private JobOffersRepository jobOffersRepo;
     private JobOfferService jobOfferService;
     private ApplicantService applicantService;
+    private JobSkillsRepository jobSkillsRepo;
 
     @Autowired
-    public MatchService(MatchesRepository matchesRepo, ApplicantsRepository applicantsRepo, JobOffersRepository jobOffersRepo) {
+    public MatchService(MatchesRepository matchesRepo, ApplicantsRepository applicantsRepo, JobOffersRepository jobOffersRepo, JobSkillsRepository jobSkillsRepo) {
         this.matchesRepo = matchesRepo;
         this.applicantsRepo = applicantsRepo;
         this.jobOffersRepo = jobOffersRepo;
+        this.jobSkillsRepo = jobSkillsRepo;
     }
 
      /**
@@ -72,5 +77,40 @@ public class MatchService {
         Match match = matchesRepo.getMatchById(matchId);
         if(match == null){throw new MatchNotFoundException("There is no match with this Id");}
         match.setMatchStatus(MatchStatus.FINALIZED);
+    }
+
+    public void automaticMatch(int jobOfferId) throws MatchException {
+        List<Integer> listJobSkillsId = jobSkillsRepo.getSkillsByJobId(jobOfferId);
+        List<Skill> requiredSkills = new ArrayList<>();
+        List<Integer> listExistedAppId = applicantsRepo.getIdAll();
+        if (listJobSkillsId.isEmpty()) {
+            throw new JobOfferException("There is no skill required for the current jobOffer");
+        } else {
+            boolean matched = false;
+            for (Integer appId : listExistedAppId) {
+                boolean check = true;
+                for (Skill skill : requiredSkills) {
+                    if(ApplicantHasSkill()){
+                    }
+                    else {
+                        check = false;
+                        break;
+                    }
+                }
+                if(check) {
+                    Match match = new Match();
+                    match.setApplicant(applicantsRepo.getApplicantById(appId));
+                    match.setJobOffer(jobOffersRepo.findById(jobOfferId));
+                    match.setMatchStatus(MatchStatus.UNFINALIZED);
+                    match.setMatchType(MatchType.AUTOMATIC);
+                    matchesRepo.save(match);
+                    matched = true;
+                    break;
+                }
+            }
+            if(!matched){
+                throw new MatchException("there is no match for JobOffer: " + jobOfferId);
+            }
+        }
     }
 }

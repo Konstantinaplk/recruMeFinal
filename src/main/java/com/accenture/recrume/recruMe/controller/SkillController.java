@@ -2,7 +2,7 @@ package com.accenture.recrume.recruMe.controller;
 
 import com.accenture.recrume.recruMe.dtos.SkillDto;
 import com.accenture.recrume.recruMe.model.Skill;
-import com.accenture.recrume.recruMe.repository.SkillsReader;
+import com.accenture.recrume.recruMe.reader.SkillsReader;
 import com.accenture.recrume.recruMe.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +28,8 @@ public class SkillController {
      * @throws IOException when the excel file wasn't found
      */
     @GetMapping("readExcel")
-    public List<Skill> getSkills() throws IOException {
-        return skillsReader.readExcel("skills.xlsx");
+    public List<String> getSkills() throws IOException {
+        return skillsReader.readExcel("./src/main/resources/data for recrume.xlsx");
     }
 
     /**
@@ -72,4 +72,11 @@ public class SkillController {
     public List<Skill> getAllSkills(){
         return skillService.getAll();
     }
+
+    @GetMapping("mostRequested")
+    public Skill getmostRequestedSkill(){
+        return skillService.gettopSkill();
+    }
+
+
 }

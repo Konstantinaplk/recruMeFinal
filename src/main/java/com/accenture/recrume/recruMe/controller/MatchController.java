@@ -49,4 +49,9 @@ public class MatchController {
         matchService.finalizeMatch(matchId);
     }
 
+    @PostMapping("automaticMatch/{jobOfferId}")
+    public void automaticMatch(@PathVariable int jobOfferId) throws MatchException {
+        matchService.automaticMatch(jobOfferId);
+    }
+
 }

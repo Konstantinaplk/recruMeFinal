@@ -3,7 +3,7 @@ package com.accenture.recrume.recruMe.controller;
 import com.accenture.recrume.recruMe.dtos.JobOfferDto;
 import com.accenture.recrume.recruMe.dtos.SkillDto;
 import com.accenture.recrume.recruMe.model.JobOffer;
-import com.accenture.recrume.recruMe.repository.JobOffersReader;
+import com.accenture.recrume.recruMe.reader.JobOffersReader;
 import com.accenture.recrume.recruMe.service.JobOfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class JobOfferController {
     @GetMapping("readExcel")
     public List<JobOffer> getJobOffers() throws IOException {
 
-        return jobOffersReader.readExcel("jobOffers.xlsx");
+        return jobOffersReader.readExcel("./src/main/resources/data for recrume.xlsx");
     }
 
     /**

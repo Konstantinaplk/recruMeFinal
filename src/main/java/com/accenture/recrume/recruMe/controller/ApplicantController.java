@@ -2,7 +2,7 @@ package com.accenture.recrume.recruMe.controller;
 
 
 import com.accenture.recrume.recruMe.model.Applicant;
-import com.accenture.recrume.recruMe.repository.ApplicantsReader;
+import com.accenture.recrume.recruMe.reader.ApplicantsReader;
 import com.accenture.recrume.recruMe.service.ApplicantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +39,7 @@ public class ApplicantController {
     @GetMapping("readExcel")
     public List<Applicant> getApplicants() throws IOException {
 
-        return applicantsReader.readExcel("applicants.xlsx");
+        return applicantsReader.readExcel("./src/main/resources/data for recrume.xlsx");
     }
 
     /**

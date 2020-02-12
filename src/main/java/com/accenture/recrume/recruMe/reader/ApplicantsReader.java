@@ -1,9 +1,10 @@
-package com.accenture.recrume.recruMe.repository;
+package com.accenture.recrume.recruMe.reader;
 
-import com.accenture.recrume.recruMe.model.Applicant;
-import com.accenture.recrume.recruMe.model.EducationLevel;
-import com.accenture.recrume.recruMe.model.ProfessionalLevel;
-import com.accenture.recrume.recruMe.model.Region;
+import com.accenture.recrume.recruMe.model.*;
+import com.accenture.recrume.recruMe.repository.AppSkillsRepository;
+import com.accenture.recrume.recruMe.repository.ApplicantsRepository;
+import com.accenture.recrume.recruMe.repository.SkillsRepository;
+import com.accenture.recrume.recruMe.service.SkillService;
 import lombok.Data;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,14 +25,21 @@ import java.util.List;
 @Service
 public class ApplicantsReader {
     private ApplicantsRepository applicantsRepo;
+    private AppSkillsRepository appSkillsRepo;
+    private SkillService skillService;
+    private SkillsRepository skillsRepo;
+
     private  final int NULL_YOB = 0;
 
     public ApplicantsReader() {
     }
 
     @Autowired
-    public ApplicantsReader(ApplicantsRepository applicantsRepo){
+    public ApplicantsReader(ApplicantsRepository applicantsRepo, AppSkillsRepository appSkillsRepo, SkillService skillService, SkillsRepository skillsRepo){
         this.applicantsRepo = applicantsRepo;
+        this.appSkillsRepo = appSkillsRepo;
+        this.skillService = skillService;
+        this.skillsRepo = skillsRepo;
     }
 
     public List<Applicant> readExcel(String excelFileName) throws IOException {
@@ -65,6 +73,15 @@ public class ApplicantsReader {
 
             applicants.add(applicant);
             applicantsRepo.save(applicant);
+            while (cellIterator.hasNext())
+            {
+                AppSkill appSkill = new AppSkill();
+                Skill skill = new Skill(cellIterator.next().getStringCellValue());
+                skillService.skillExist(skill.getName());
+                appSkill.setApplicant(applicant);
+                appSkill.setSkill(skillsRepo.findSkillByName(skill.getName()));
+                appSkillsRepo.save(appSkill);
+            }
         }
         return applicants;
     }

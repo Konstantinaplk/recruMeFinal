@@ -13,4 +13,6 @@ public interface MatchesRepository extends PagingAndSortingRepository<Match, Int
 
     @Query (value = "select * from Match where id=:matchId", nativeQuery = true)
     Match getMatchById(@Param("matchId") int matchId);
+
+
 }

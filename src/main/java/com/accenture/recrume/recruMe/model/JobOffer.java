@@ -28,13 +28,13 @@ public class JobOffer {
     private Region region;
 
 
-    public JobOffer(String title, EducationLevel educationLevel, ProfessionalLevel professionalLevel, String company, Status status, Region region, Calendar dateSubmitted) {
+    public JobOffer(String company, String title,  Region region, EducationLevel educationLevel, ProfessionalLevel professionalLevel, Status status, Calendar dateSubmitted) {
+        this.company = company;
         this.title = title;
+        this.region = region;
         this.educationLevel = educationLevel;
         this.professionalLevel = professionalLevel;
-        this.company = company;
         this.status = status;
-        this.region = region;
         this.dateSubmitted = GregorianCalendar.getInstance().getTimeInMillis();
 
     }

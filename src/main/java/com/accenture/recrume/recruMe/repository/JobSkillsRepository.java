@@ -16,4 +16,7 @@ public interface JobSkillsRepository extends CrudRepository<JobSkill, Integer> {
 
     @Query(value = "select job_offer_id from job_skill where skill_id=:idSkill", nativeQuery = true)
     List<Integer> getJobOfferBySkill(@Param("idSkill") int idSkill);
+
+    @Query(value = "select skill_id from job_skill where job_Id = :jobId", nativeQuery = true)
+    List<Integer> getSkillsByJobId(@Param("jobId") int jobId);
 }
