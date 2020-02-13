@@ -21,34 +21,11 @@ localhost:8080/applicants/readExcel
 localhost:8080/jobOffer/readExcel
 ```
 
-#### POST methods for applicant, jobOffer, automaticMatch, manualMatch  
-
-###### POST HTTP method to add a new applicant 
-```
-localhost:8080/applicants/add
-```
-###### POST HTTP method to add a new jobOffer
-```
-localhost:8080/jobOffer/add
-```
-###### POST HTTP method to add a new Skill
-```
-localhost:8080/skill/add
-```
-###### POST HTTP method to do an manual match
-```
-localhost:8080/match/appId/{appId}/jobOffer/{jobOfferId}
-```
-###### POST HTTP method to do automatic match for all existed jobOffers
-```
-localhost:8080/createAutomaticMatches
-```
-
 ### Applicant
 
-###### GET HTTP methods to get certain applicants according possible request
+###### GET HTTP methods to get applicant/applicants according possible request
 ```
-localhost:8080/applicants/id/{id}
+localhost:8080/applicants/applicant/id/{id}
 ```
 ```
 localhost:8080/applicants/age/from/{ageFrom}/to/{ageTo}
@@ -65,48 +42,102 @@ localhost:8080/applicants/activeApplicants
 ```
 localhost:8080/applicants/skill/{skillName}
 ```
+###### POST HTTP method to add a new applicant 
+```
+localhost:8080/applicants/applicant/add
+```
 ###### PUT HTTP methods to update an existed applicant
 ```
-localhost:8080/applicants/{id}/inactive
+localhost:8080/applicants/applicant/{id}/inactive
 ```
 ```
-localhost:8080/applicants/{id}/update
+localhost:8080/applicants/applicant/{id}/update
 ```
 
 ### JobOffer
-###### GET HTTP methods to get certain jobOffer according possible request
+###### GET HTTP methods to get jobOffer/jobOffers according possible request
 ```
-localhost:8080/jobOffer/region/{region}
-```
-```
-localhost:8080/jobOffer/id/{id}
+localhost:8080/jobOffers/region/{region}
 ```
 ```
-localhost:8080/jobOffer/company/{companyName}
+localhost:8080/jobOffers/jobOffer/id/{id}
 ```
 ```
-localhost:8080/jobOffer/activeJobOffer
+localhost:8080/jobOffers/company/{companyName}
 ```
 ```
-localhost:8080/jobOffer/age/from/{ageFrom}/to/{ageTo}
+localhost:8080/jobOffers/activeJobOffer
+```
+```
+localhost:8080/jobOffers/age/from/{ageFrom}/to/{ageTo}
 ```
 ```
 localhost:8080/jobOffer/skill/{skillName}
 ```
+###### POST HTTP method to add a new jobOffer
+```
+localhost:8080/jobOffers/jobOffer/add
+```
 ###### PUT HTTP methods to update an existed jobOffer
 ```
-localhost:8080/jobOffer/{id}/update
+localhost:8080/jobOffers/jobOffer/{id}/update
 ```
 ```
-localhost:8080/jobOffer/{id}/inactive
+localhost:8080/jobOffers/jobOffer/{id}/inactive
 ```
 ```
-localhost:8080/jobOffer/jobOffer/{id}/updateSkill/{name}
+localhost:8080/jobOffers/jobOffer/{id}/updateSkill/{name}
 ```
 ### Skill
-###### GET HTTP methods to get certain skill according possible request
+###### GET HTTP methods to get skill/skills according possible request
+```
+localhost:8080/skills/all
+```
+```
+localhost:8080/skills/mostRequested
+```
+```
+localhost:8080/skills/notMatchedSkillsByTheApplicants
+```
+###### POST HTTP method to add and delete a Skill
+```
+localhost:8080/skills/skill/add
+```
+```
+localhost:8080/skills/skill/delete
+```
+###### PUT HTTP methods to update an existed Skill
+```
+localhost:8080/skills/skill/{id}
+```
 
+### Match
+###### GET HTTP methods to get certain match according possible request
+```
+localhost:8080/match/getProposedUnfinalizedMatches
+```
+```
+localhost:8080/match/getMostRecentMatches
+```
+###### POST HTTP two methods to do a manual and an automatic match. 
+###### POST HTTP method to delete a match
+```
+localhost:8080/match/appId/{appId}/jobOffer/{jobOfferId}
+```
+```
+localhost:8080/match/createAutomaticMatches
+```
+```
+localhost:8080/match/{matchId}/delete
+```
 
+###### PUT HTTP methods to update an existed match
+```
+localhost:8080/match/{matchId}/delete
+```
+```
+localhost:8080/match/{matchId}/finalize
+```
 
 
 ###Prerequisites
