@@ -69,8 +69,7 @@ public class JobOffersReader {
                     Region.valueOf(regionCell.getStringCellValue()),
                     EducationLevel.valueOf(educationLevelCell.getStringCellValue()),
                     null,
-                    Status.ACTIVE,
-                    GregorianCalendar.getInstance()
+                    Status.ACTIVE
             );
 
             jobOffers.add(jobOffer);

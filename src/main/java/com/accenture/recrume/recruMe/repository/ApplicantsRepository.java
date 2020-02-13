@@ -24,7 +24,7 @@ public interface ApplicantsRepository extends JpaRepository<Applicant, Integer> 
     List<Integer> getActiveApplicants();
 
     @Query(value = "select * from applicant where region = :region", nativeQuery = true)
-    List<Applicant> findByRegion(int valueToDb);
+    List<Applicant> findByRegion(@Param("region") int valueToDb);
 
     @Query(value = "select * from applicant where last_name=:lastName", nativeQuery = true)
     List<Applicant> getApplicantByLastName(@Param("lastName") String lastName);
