@@ -1,10 +1,10 @@
-package com.accenture.recrume.controller;
+package com.accenture.recrume.recruMe.controller;
 
-import com.accenture.recrume.reader.ApplicantsReader;
-import com.accenture.recrume.dtos.ApplicantDto;
-import com.accenture.recrume.dtos.SkillDto;
-import com.accenture.recrume.model.Applicant;
-import com.accenture.recrume.service.ApplicantService;
+import com.accenture.recrume.recruMe.dtos.ApplicantDto;
+import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.model.Applicant;
+import com.accenture.recrume.recruMe.reader.ApplicantsReader;
+import com.accenture.recrume.recruMe.service.ApplicantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

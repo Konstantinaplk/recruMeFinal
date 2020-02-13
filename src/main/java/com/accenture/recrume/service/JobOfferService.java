@@ -1,5 +1,14 @@
-package com.accenture.recrume.service;
+package com.accenture.recrume.recruMe.service;
 
+import com.accenture.recrume.recruMe.dtos.JobOfferDto;
+import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.exception.ApplicantNotFoundException;
+import com.accenture.recrume.recruMe.exception.JobOfferException;
+import com.accenture.recrume.recruMe.exception.JobOfferNotFoundException;
+import com.accenture.recrume.recruMe.model.*;
+import com.accenture.recrume.recruMe.repository.JobOffersRepository;
+import com.accenture.recrume.recruMe.repository.JobSkillsRepository;
+import com.accenture.recrume.recruMe.repository.SkillsRepository;
 import com.accenture.recrume.dtos.JobOfferDto;
 import com.accenture.recrume.dtos.SkillDto;
 import com.accenture.recrume.model.*;
@@ -36,6 +45,7 @@ public class JobOfferService {
     /**
      * Reads data from frontend to create a new JobOffer Object to store in JobSkill table.
      * and its skills are store in JobSkillTable.
+     *
      * @param jobOfferDto Dto Object to get data for a new JobOffer.
      * @return Job offer just saved without its skills.
      */
@@ -74,7 +84,10 @@ public class JobOfferService {
      * @param region String to get the region.
      * @return
      */
-    public List<JobOffer> getByRegion(String region) {
+    public List<JobOffer> getByRegion(String region) throws JobOfferNotFoundException {
+        if (jobOffersRepo.findByRegion(Region.valueOf(region).getValueToDb()).isEmpty()) {
+            throw new JobOfferNotFoundException("there is no jobOffer in region" + region);
+        }
         return jobOffersRepo.findByRegion(Region.valueOf(region).getValueToDb());
     }
 
@@ -82,11 +95,19 @@ public class JobOfferService {
      * Convert an active Job offer to inactive status/mode and saves it.
      * @param id Integer which represent the id of a JobOffer.
      */
-    public void setJobOfferInactive(int id) {
-        JobOffer jobOffer = new JobOffer();
-        jobOffer = jobOffersRepo.findById(id);
-        jobOffer.setStatus(Status.INACTIVE);
-        jobOffersRepo.save(jobOffer);
+    public void setJobOfferInactive(int id) throws JobOfferNotFoundException, JobOfferException {
+        if (jobOffersRepo.findById(id) == null) {
+            throw new JobOfferNotFoundException("there is no jobOffer with this Id:" + id);
+        } else {
+            if (jobOffersRepo.findById(id).getStatus().equals(Status.INACTIVE)) {
+                throw new JobOfferException("the specific jobOffer is already inactive");
+            } else {
+                JobOffer jobOffer = new JobOffer();
+                jobOffer = jobOffersRepo.findById(id);
+                jobOffer.setStatus(Status.INACTIVE);
+                jobOffersRepo.save(jobOffer);
+            }
+        }
     }
 
     /**
@@ -121,8 +142,8 @@ public class JobOfferService {
     /**
      * Reads an other Skill from frontend to update a JobSkill Object and restore in it JobSkill table.
      * @param skillDto Dto Skill Object to get the new Skill to replace the old.
-     * @param id Integer which represents the id of a JobOffer
-     * @param name The name of the existing Skill, which is going to change.
+     * @param id       Integer which represents the id of a JobOffer
+     * @param name     The name of the existing Skill, which is going to change.
      */
     public void updateJobOfferSkill(SkillDto skillDto, int id, String name) {
         Skill skill = skillsRepo.findSkillByName(name);

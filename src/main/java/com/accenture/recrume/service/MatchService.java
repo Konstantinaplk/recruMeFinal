@@ -131,9 +131,7 @@ public class MatchService {
      */
     private void checkForAutomaticMatch(int jobOfferId) throws MatchException, JobOfferException {
         List<Integer> listJobSkillsId = jobSkillsRepo.getSkillsByJobId(jobOfferId);
-        System.out.println(listJobSkillsId);
         List<Integer> listActiveAppId = applicantsRepo.getActiveApplicants();
-        System.out.println(listActiveAppId);
         if (listJobSkillsId.isEmpty()) {
             throw new JobOfferException("There is no skill required for the current jobOffer");
         } else {

@@ -1,5 +1,13 @@
-package com.accenture.recrume.service;
+package com.accenture.recrume.recruMe.service;
 
+import com.accenture.recrume.recruMe.dtos.ApplicantDto;
+import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.exception.ApplicantException;
+import com.accenture.recrume.recruMe.exception.ApplicantNotFoundException;
+import com.accenture.recrume.recruMe.model.*;
+import com.accenture.recrume.recruMe.repository.AppSkillsRepository;
+import com.accenture.recrume.recruMe.repository.ApplicantsRepository;
+import com.accenture.recrume.recruMe.repository.SkillsRepository;
 import com.accenture.recrume.model.*;
 import com.accenture.recrume.dtos.ApplicantDto;
 import com.accenture.recrume.dtos.SkillDto;
@@ -71,22 +79,35 @@ public class ApplicantService {
 
     /**
      * Returns a list of Applicants which are in the same Region.
+     *
      * @param region String to get the region.
      * @return A list of applicants.
      */
-    public List<Applicant> getByRegion(String region) {
-        return applicantsRepo.findByRegion(Region.valueOf(region).getValueToDb());
+    public List<Applicant> getByRegion(String region) throws ApplicantNotFoundException {
+        if (applicantsRepo.findByRegion(Region.valueOf(region).getValueToDb()).isEmpty()) {
+            throw new ApplicantNotFoundException("there is no applicants available in region" + region);
+        } else {
+            return applicantsRepo.findByRegion(Region.valueOf(region).getValueToDb());
+        }
     }
 
     /**
      * Convert an active Applicant to inactive status/mode and saves it.
      * @param appId Integer which represent the id of a Applicant.
      */
-    public void setApplicantInactive(int appId) {
-        Applicant applicant = new Applicant();
-        applicant = applicantsRepo.getApplicantById(appId);
-        applicant.setStatus(Status.INACTIVE);
-        applicantsRepo.save(applicant);
+    public void setApplicantInactive(int appId) throws ApplicantNotFoundException, ApplicantException {
+        if (applicantsRepo.getApplicantById(appId) == null) {
+            throw new ApplicantNotFoundException("there is no applicant with this Id:" + appId);
+        } else {
+            Applicant applicant = new Applicant();
+            if (applicantsRepo.getApplicantById(appId).getStatus().equals(Status.INACTIVE)) {
+                throw new ApplicantException("the applicant is already inactive");
+            } else {
+                applicant = applicantsRepo.getApplicantById(appId);
+                applicant.setStatus(Status.INACTIVE);
+                applicantsRepo.save(applicant);
+            }
+        }
     }
 
     /**
@@ -164,14 +185,14 @@ public class ApplicantService {
     /**
      * Reads an other Skill from frontend to update a Applicant Object and restore in it Applicant table.
      * @param skillDto Dto Skill Object to get the new Skill to replace the old.
-     * @param id Integer which represents the id of a Applicant
-     * @param name The name of the existing Skill, which is going to change.
+     * @param id       Integer which represents the id of a Applicant
+     * @param name     The name of the existing Skill, which is going to change.
      */
     public void updateApplicantSkill(SkillDto skillDto, int id, String name) {
-            Skill skill = skillsRepo.findSkillByName(name);
-            AppSkill appSkill = appSkillsRepo.getAppSkill(id, skill.getId());
-            skillService.skillExist(skillDto.getName());
-            appSkill.setSkill(skillsRepo.findSkillByName(skillDto.getName()));
-            appSkillsRepo.save(appSkill);
+        Skill skill = skillsRepo.findSkillByName(name);
+        AppSkill appSkill = appSkillsRepo.getAppSkill(id, skill.getId());
+        skillService.skillExist(skillDto.getName());
+        appSkill.setSkill(skillsRepo.findSkillByName(skillDto.getName()));
+        appSkillsRepo.save(appSkill);
     }
 }

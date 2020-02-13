@@ -1,3 +1,8 @@
+package com.accenture.recrume.recruMe.service;
+import com.accenture.recrume.recruMe.exception.MatchException;
+import com.accenture.recrume.recruMe.exception.MatchNotFoundException;
+import com.accenture.recrume.recruMe.model.*;
+import com.accenture.recrume.recruMe.repository.*;
 package com.accenture.recrume.service;
 
 import com.accenture.recrume.exception.MatchException;
@@ -9,10 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-//@RunWith(SpringRunner.class)
 @SpringBootTest
 class MatchServiceTest {
     Applicant applicant;
