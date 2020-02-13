@@ -49,7 +49,7 @@ public class JobOfferController {
     /**
      * GET endpoint which returns JobOffers for a specific region.
      * @param region String which represents the Region of the JobOffers, read from path
-     * @return Listo of JobOffers
+     * @return List of JobOffers
      */
     @GetMapping("region/{region}")
     public List<JobOffer> getByRegion(@PathVariable String region){
@@ -72,7 +72,7 @@ public class JobOfferController {
      */
     @GetMapping("id/{id}")
     public JobOffer getJobOffer(@PathVariable int id) {
-        return jobOfferService.getJobOffer(id);
+        return jobOfferService.getJobOfferById(id);
     }
 
     /**

@@ -28,7 +28,7 @@ public class JobOffer {
     private Region region;
 
 
-    public JobOffer(String company, String title,  Region region, EducationLevel educationLevel, ProfessionalLevel professionalLevel, Status status, Calendar dateSubmitted) {
+    public JobOffer(String company, String title,  Region region, EducationLevel educationLevel, ProfessionalLevel professionalLevel, Status status) {
         this.company = company;
         this.title = title;
         this.region = region;

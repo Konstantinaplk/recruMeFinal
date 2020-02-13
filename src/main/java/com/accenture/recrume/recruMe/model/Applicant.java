@@ -30,11 +30,10 @@ public class Applicant {
             EducationLevel educationLevel, ProfessionalLevel professionalLevel, int yob) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.yob = yob;
-        this.region = region;
-        this.status = Status.ACTIVE;
-        this.educationLevel = educationLevel;
         this.address = address;
-        this.professionalLevel = getProfessionalLevel();
+        this.region = region;
+        this.educationLevel = educationLevel;
+        this.professionalLevel = professionalLevel;
+        this.yob = yob;
     }
 }

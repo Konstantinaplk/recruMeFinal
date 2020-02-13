@@ -33,8 +33,9 @@ public class JobOfferService {
         this.skillService = skillService;
     }
 
-     /**
-     * Reads data from frontend to create a new JobOffer Object and its skills to store in JobSkill table.
+    /**
+     * Reads data from frontend to create a new JobOffer Object to store in JobSkill table.
+     * and its skills are store in JobSkillTable.
      * @param jobOfferDto Dto Object to get data for a new JobOffer.
      * @return Job offer just saved without its skills.
      */
@@ -55,16 +56,17 @@ public class JobOfferService {
 
     /**
      * Reads from frontend a JobOffer and one of its skills to store this match in JobSkill table.
-     * @param skill Read a skill.
+     *
+     * @param skill    Read a skill.
      * @param jobOffer read a JobOffer.
      */
-    public void readJobOfferSkill(Skill skill, JobOffer jobOffer){
-            JobSkill jobSkill = new JobSkill();
-            jobSkill.setJobOffer(jobOffer);
-            String name = skill.getName();
-            skillService.skillExist(name);
-            jobSkill.setSkill(skillsRepo.findSkillByName(name));
-            jobSkillsRepo.save(jobSkill);
+    public void readJobOfferSkill(Skill skill, JobOffer jobOffer) {
+        JobSkill jobSkill = new JobSkill();
+        jobSkill.setJobOffer(jobOffer);
+        String name = skill.getName();
+        skillService.skillExist(name);
+        jobSkill.setSkill(skillsRepo.findSkillByName(name));
+        jobSkillsRepo.save(jobSkill);
     }
 
     /**
@@ -92,7 +94,7 @@ public class JobOfferService {
      * @param id Integer which represents a JobOffer's id.
      * @return the JobOffer with this id
      */
-    public JobOffer getJobOffer(int id) {
+    public JobOffer getJobOfferById(int id) {
         return jobOffersRepo.findById(id);
     }
 
@@ -133,7 +135,7 @@ public class JobOfferService {
     /**
      * Return a list of JobOffer which are from a specific Company.
      * @param company String which represents the Company Name of a JobOffer.
-     * @return A list of JobOffer
+     * @return A list of JobOffer.
      */
     public List<JobOffer> getByCompany(String company) {
         return jobOffersRepo.findByCompany(company);
@@ -148,9 +150,9 @@ public class JobOfferService {
 
     /**
      * Give a list of JobOffer which submitted after a specific date until today.
-     * @param day Integer which represents the day of the month for the date.
+     * @param day   Integer which represents the day of the month for the date.
      * @param month Integer which represents the month of the year for the date.
-     * @param year Integer which represents the year for the date.
+     * @param year  Integer which represents the year for the date.
      * @return A list of JobOffer.
      */
     public List<JobOffer> getJobOfferByDate(int day, int month, int year) {
@@ -173,9 +175,10 @@ public class JobOfferService {
         Skill skill = skillsRepo.findSkillByName(skillName);
         List<Integer> jobOfferIdList = jobSkillsRepo.getJobOfferBySkill(skill.getId());
         List<JobOffer> jobOfferList = new ArrayList<>();
-        for (Integer jobOfferId:jobOfferIdList){
+        for (Integer jobOfferId : jobOfferIdList) {
             jobOfferList.add(jobOffersRepo.findById(jobOfferId).get());
         }
         return jobOfferList;
     }
+
 }

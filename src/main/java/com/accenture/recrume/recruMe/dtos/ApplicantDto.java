@@ -1,9 +1,6 @@
 package com.accenture.recrume.recruMe.dtos;
 
-import com.accenture.recrume.recruMe.model.EducationLevel;
-import com.accenture.recrume.recruMe.model.Region;
-import com.accenture.recrume.recruMe.model.Skill;
-import com.accenture.recrume.recruMe.model.Status;
+import com.accenture.recrume.recruMe.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +14,10 @@ import java.util.List;
 public class ApplicantDto {
     private String firstName;
     private String lastName;
-    private int yob;
-    private Region region;
-    private Status status;
-    private EducationLevel educationLevel;
     private String address;
+    private Region region;
+    private int yob;
+    private EducationLevel educationLevel;
+    private ProfessionalLevel professionalLevel;
     private List<Skill> skills;
 }
