@@ -2,6 +2,8 @@ package com.accenture.recrume.recruMe.controller;
 
 import com.accenture.recrume.recruMe.dtos.ApplicantDto;
 import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.exception.ApplicantException;
+import com.accenture.recrume.recruMe.exception.ApplicantNotFoundException;
 import com.accenture.recrume.recruMe.model.Applicant;
 import com.accenture.recrume.recruMe.reader.ApplicantsReader;
 import com.accenture.recrume.recruMe.service.ApplicantService;
@@ -70,7 +72,7 @@ public class ApplicantController {
      * @param id Integer which represents the id of a specific Applicant.
      */
     @PutMapping("applicant/{id}/inactive")
-    public void setInactive(@PathVariable int id){
+    public void setInactive(@PathVariable int id) throws ApplicantNotFoundException, ApplicantException {
         applicantService.setApplicantInactive(id);
     }
 
@@ -80,7 +82,7 @@ public class ApplicantController {
      * @return List of Applicants
      */
     @GetMapping("region/{region}")
-    public List<Applicant> getByRegion(@PathVariable String region){
+    public List<Applicant> getByRegion(@PathVariable String region) throws ApplicantNotFoundException {
         return applicantService.getByRegion(region);
     }
 

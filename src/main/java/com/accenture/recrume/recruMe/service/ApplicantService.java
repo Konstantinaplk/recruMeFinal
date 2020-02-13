@@ -2,13 +2,14 @@ package com.accenture.recrume.recruMe.service;
 
 import com.accenture.recrume.recruMe.dtos.ApplicantDto;
 import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.exception.ApplicantException;
+import com.accenture.recrume.recruMe.exception.ApplicantNotFoundException;
 import com.accenture.recrume.recruMe.model.*;
 import com.accenture.recrume.recruMe.repository.AppSkillsRepository;
 import com.accenture.recrume.recruMe.repository.ApplicantsRepository;
 import com.accenture.recrume.recruMe.repository.SkillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +59,8 @@ public class ApplicantService {
 
     /**
      * Reads from frontend a Applicant and one of its skills to store this match in Applicant table.
-     * @param skill Read a skill.
+     *
+     * @param skill     Read a skill.
      * @param applicant read a Applicant.
      */
     public void readApplicantSkill(Skill skill, Applicant applicant) {
@@ -72,31 +74,46 @@ public class ApplicantService {
 
     /**
      * Returns a list of Applicants which are in the same Region.
+     *
      * @param region String to get the region.
      * @return A list of applicants.
      */
-    public List<Applicant> getByRegion(String region) {
-        return applicantsRepo.findByRegion(Region.valueOf(region).getValueToDb());
+    public List<Applicant> getByRegion(String region) throws ApplicantNotFoundException {
+        if (applicantsRepo.findByRegion(Region.valueOf(region).getValueToDb()).isEmpty()) {
+            throw new ApplicantNotFoundException("there is no applicants available in region" + region);
+        } else {
+            return applicantsRepo.findByRegion(Region.valueOf(region).getValueToDb());
+        }
     }
 
     /**
      * Convert an active Applicant to inactive status/mode and saves it.
      * @param appId Integer which represent the id of a Applicant.
      */
-    public void setApplicantInactive(int appId) {
-        Applicant applicant = new Applicant();
-        applicant = applicantsRepo.getApplicantById(appId);
-        applicant.setStatus(Status.INACTIVE);
-        applicantsRepo.save(applicant);
+    public void setApplicantInactive(int appId) throws ApplicantNotFoundException, ApplicantException {
+        if (applicantsRepo.getApplicantById(appId) == null) {
+            throw new ApplicantNotFoundException("there is no applicant with this Id:" + appId);
+        } else {
+            Applicant applicant = new Applicant();
+            if (applicantsRepo.getApplicantById(appId).getStatus().equals(Status.INACTIVE)) {
+                throw new ApplicantException("the applicant is already inactive");
+            } else {
+                applicant = applicantsRepo.getApplicantById(appId);
+                applicant.setStatus(Status.INACTIVE);
+                applicantsRepo.save(applicant);
+            }
+        }
     }
 
     /**
      * Get the applicants with certain range of age.
+     *
      * @param ageFrom Integer which refers to the yob of the youngest applicant.
      * @param ageTo   Integer which refers to the yob of the oldest applicant.
      * @return A list of applicants
      */
     public List<Applicant> getApplicantsByAgeRange(int ageFrom, int ageTo) {
+
         int thisYear = GregorianCalendar.getInstance().get(Calendar.YEAR);
         int yearTo = thisYear - ageFrom;
         int yearFrom = thisYear - ageTo;
@@ -105,6 +122,7 @@ public class ApplicantService {
 
     /**
      * Returns a Applicant with a specific id.
+     *
      * @param id Integer which represents a Applicant's id.
      * @return the Applicant with this id.
      */
@@ -114,6 +132,7 @@ public class ApplicantService {
 
     /**
      * Reads data from frontend to update a Applicant Object and restore in it Applicant table.
+     *
      * @param id           Integer which represents a Applicant's id.
      * @param applicantDto Dto Applicant Object to get the updated fields.
      */
@@ -132,6 +151,7 @@ public class ApplicantService {
 
     /**
      * Return a list of applicants which are from a specific LastName.
+     *
      * @param lastName String which represents the LastName of a applicants.
      * @return A list of applicants.
      */
@@ -149,6 +169,7 @@ public class ApplicantService {
 
     /**
      * Give a list of Applicants objects that has a certain skill.
+     *
      * @param skillName String which refers to the name of the skill.
      * @return A list of Applicants.
      */
@@ -164,15 +185,16 @@ public class ApplicantService {
 
     /**
      * Reads an other Skill from frontend to update a Applicant Object and restore in it Applicant table.
+     *
      * @param skillDto Dto Skill Object to get the new Skill to replace the old.
-     * @param id Integer which represents the id of a Applicant
-     * @param name The name of the existing Skill, which is going to change.
+     * @param id       Integer which represents the id of a Applicant
+     * @param name     The name of the existing Skill, which is going to change.
      */
     public void updateApplicantSkill(SkillDto skillDto, int id, String name) {
-            Skill skill = skillsRepo.findSkillByName(name);
-            AppSkill appSkill = appSkillsRepo.getAppSkill(id, skill.getId());
-            skillService.skillExist(skillDto.getName());
-            appSkill.setSkill(skillsRepo.findSkillByName(skillDto.getName()));
-            appSkillsRepo.save(appSkill);
+        Skill skill = skillsRepo.findSkillByName(name);
+        AppSkill appSkill = appSkillsRepo.getAppSkill(id, skill.getId());
+        skillService.skillExist(skillDto.getName());
+        appSkill.setSkill(skillsRepo.findSkillByName(skillDto.getName()));
+        appSkillsRepo.save(appSkill);
     }
 }

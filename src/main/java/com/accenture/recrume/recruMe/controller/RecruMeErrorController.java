@@ -1,8 +1,7 @@
 package com.accenture.recrume.recruMe.controller;
 
 
-import com.accenture.recrume.recruMe.exception.ExcelFileNotFoundException;
-import com.accenture.recrume.recruMe.exception.MatchException;
+import com.accenture.recrume.recruMe.exception.*;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,11 +20,26 @@ public class RecruMeErrorController
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
 
+        if (exception instanceof ExcelFileNotFoundException){
+            return exception.getMessage();
+        }
         if (exception instanceof MatchException)
         {
             return exception.getMessage();
         }
-        if (exception instanceof ExcelFileNotFoundException){
+        if (exception instanceof MatchNotFoundException){
+            return exception.getMessage();
+        }
+        if (exception instanceof ApplicantNotFoundException){
+            return exception.getMessage();
+        }
+        if (exception instanceof ApplicantException){
+            return exception.getMessage();
+        }
+        if (exception instanceof JobOfferNotFoundException){
+            return exception.getMessage();
+        }
+        if (exception instanceof JobOfferException){
             return exception.getMessage();
         }
 

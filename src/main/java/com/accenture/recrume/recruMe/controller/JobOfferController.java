@@ -2,6 +2,8 @@ package com.accenture.recrume.recruMe.controller;
 
 import com.accenture.recrume.recruMe.dtos.JobOfferDto;
 import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.exception.JobOfferException;
+import com.accenture.recrume.recruMe.exception.JobOfferNotFoundException;
 import com.accenture.recrume.recruMe.model.JobOffer;
 import com.accenture.recrume.recruMe.reader.JobOffersReader;
 import com.accenture.recrume.recruMe.service.JobOfferService;
@@ -52,7 +54,7 @@ public class JobOfferController {
      * @return List of JobOffers
      */
     @GetMapping("region/{region}")
-    public List<JobOffer> getByRegion(@PathVariable String region){
+    public List<JobOffer> getByRegion(@PathVariable String region) throws JobOfferNotFoundException {
         return jobOfferService.getByRegion(region);
     }
 
@@ -61,7 +63,7 @@ public class JobOfferController {
      * @param id Integer which represents the id of a specific JobOffer.
      */
     @PutMapping("jobOffer/{id}/inactive")
-    public void setInactive(@PathVariable int id){
+    public void setInactive(@PathVariable int id) throws JobOfferNotFoundException, JobOfferException {
         jobOfferService.setJobOfferInactive(id);
     }
 

@@ -2,6 +2,9 @@ package com.accenture.recrume.recruMe.service;
 
 import com.accenture.recrume.recruMe.dtos.JobOfferDto;
 import com.accenture.recrume.recruMe.dtos.SkillDto;
+import com.accenture.recrume.recruMe.exception.ApplicantNotFoundException;
+import com.accenture.recrume.recruMe.exception.JobOfferException;
+import com.accenture.recrume.recruMe.exception.JobOfferNotFoundException;
 import com.accenture.recrume.recruMe.model.*;
 import com.accenture.recrume.recruMe.repository.JobOffersRepository;
 import com.accenture.recrume.recruMe.repository.JobSkillsRepository;
@@ -36,6 +39,7 @@ public class JobOfferService {
     /**
      * Reads data from frontend to create a new JobOffer Object to store in JobSkill table.
      * and its skills are store in JobSkillTable.
+     *
      * @param jobOfferDto Dto Object to get data for a new JobOffer.
      * @return Job offer just saved without its skills.
      */
@@ -71,26 +75,40 @@ public class JobOfferService {
 
     /**
      * Returns a list of JobOffers which are in the same Region.
+     *
      * @param region String to get the region.
      * @return
      */
-    public List<JobOffer> getByRegion(String region) {
+    public List<JobOffer> getByRegion(String region) throws JobOfferNotFoundException {
+        if (jobOffersRepo.findByRegion(Region.valueOf(region).getValueToDb()).isEmpty()) {
+            throw new JobOfferNotFoundException("there is no jobOffer in region" + region);
+        }
         return jobOffersRepo.findByRegion(Region.valueOf(region).getValueToDb());
     }
 
     /**
      * Convert an active Job offer to inactive status/mode and saves it.
+     *
      * @param id Integer which represent the id of a JobOffer.
      */
-    public void setJobOfferInactive(int id) {
-        JobOffer jobOffer = new JobOffer();
-        jobOffer = jobOffersRepo.findById(id);
-        jobOffer.setStatus(Status.INACTIVE);
-        jobOffersRepo.save(jobOffer);
+    public void setJobOfferInactive(int id) throws JobOfferNotFoundException, JobOfferException {
+        if (jobOffersRepo.findById(id) == null) {
+            throw new JobOfferNotFoundException("there is no jobOffer with this Id:" + id);
+        } else {
+            if (jobOffersRepo.findById(id).getStatus().equals(Status.INACTIVE)) {
+                throw new JobOfferException("the specific jobOffer is already inactive");
+            } else {
+                JobOffer jobOffer = new JobOffer();
+                jobOffer = jobOffersRepo.findById(id);
+                jobOffer.setStatus(Status.INACTIVE);
+                jobOffersRepo.save(jobOffer);
+            }
+        }
     }
 
     /**
      * Returns a JobOffer with a specific id.
+     *
      * @param id Integer which represents a JobOffer's id.
      * @return the JobOffer with this id
      */
@@ -100,7 +118,8 @@ public class JobOfferService {
 
     /**
      * Reads data from frontend to update a JobOffer Object and restore in it JobOffer table.
-     * @param id Integer which represents a JobOffer's id.
+     *
+     * @param id          Integer which represents a JobOffer's id.
      * @param jobOfferDto Dto JobOffer Object to get the updated fields.
      * @return the updated JobOffer
      */
@@ -120,9 +139,10 @@ public class JobOfferService {
 
     /**
      * Reads an other Skill from frontend to update a JobSkill Object and restore in it JobSkill table.
+     *
      * @param skillDto Dto Skill Object to get the new Skill to replace the old.
-     * @param id Integer which represents the id of a JobOffer
-     * @param name The name of the existing Skill, which is going to change.
+     * @param id       Integer which represents the id of a JobOffer
+     * @param name     The name of the existing Skill, which is going to change.
      */
     public void updateJobOfferSkill(SkillDto skillDto, int id, String name) {
         Skill skill = skillsRepo.findSkillByName(name);
@@ -134,6 +154,7 @@ public class JobOfferService {
 
     /**
      * Return a list of JobOffer which are from a specific Company.
+     *
      * @param company String which represents the Company Name of a JobOffer.
      * @return A list of JobOffer.
      */
@@ -150,6 +171,7 @@ public class JobOfferService {
 
     /**
      * Give a list of JobOffer which submitted after a specific date until today.
+     *
      * @param day   Integer which represents the day of the month for the date.
      * @param month Integer which represents the month of the year for the date.
      * @param year  Integer which represents the year for the date.
@@ -168,6 +190,7 @@ public class JobOfferService {
 
     /**
      * Give a list of JobOffer objects that has a certain skill.
+     *
      * @param skillName String which refers to the name of the skill.
      * @return A list of JobOffers.
      */
