@@ -3,9 +3,12 @@ package com.accenture.recrume.recruMe.controller;
 import com.accenture.recrume.recruMe.exception.JobOfferException;
 import com.accenture.recrume.recruMe.exception.MatchException;
 import com.accenture.recrume.recruMe.exception.MatchNotFoundException;
+import com.accenture.recrume.recruMe.model.Match;
 import com.accenture.recrume.recruMe.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("match")
@@ -24,8 +27,8 @@ public class MatchController {
      * @param jobOfferId Integer which refers to an jobOffer's id.
      */
     @PostMapping("appId/{appId}/jobOffer/{jobOfferId}")
-    public void addManualMatch(@PathVariable int appId, @PathVariable int jobOfferId) throws MatchException {
-        matchService.addManualMatch(appId, jobOfferId);
+    public Match addManualMatch(@PathVariable int appId, @PathVariable int jobOfferId) throws MatchException {
+        return matchService.addManualMatch(appId, jobOfferId);
     }
 
     /**
@@ -54,4 +57,16 @@ public class MatchController {
     public void automaticMatch() throws MatchException, JobOfferException {
         matchService.createAutomaticMatches();
     }
+
+    @GetMapping("getProposedUnfinalizedMatches")
+    public List<Match> viewProposedUnfinalizdMatches() {
+        return matchService.viewProposedUnfinalizdMatches();
+    }
+
+    @GetMapping("getMostRecentMatches")
+    public List<Match> getMostRecentMatches() {
+        return matchService.getOrderedMatchesByDate();
+    }
+
+
 }

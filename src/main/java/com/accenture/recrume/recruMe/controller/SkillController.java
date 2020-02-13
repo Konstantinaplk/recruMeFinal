@@ -74,9 +74,12 @@ public class SkillController {
     }
 
     @GetMapping("mostRequested")
-    public Skill getmostRequestedSkill(){
-        return skillService.gettopSkill();
+    public List<Skill> getmostRequestedSkill(){
+        return skillService.getTopRequestedSkills();
     }
 
-
+    @GetMapping("notMatchedSkillsByTheApplicants")
+    public List<Skill> notMatchedSkillsByTheApplicants(){
+        return skillService.notMatchedSkillsByTheApplicants();
+    }
 }

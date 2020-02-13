@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ApplicantsRepository<nativeQuery> extends JpaRepository<Applicant, Integer> {
+public interface ApplicantsRepository extends JpaRepository<Applicant, Integer> {
 
     @Query(value = "select * from applicant where yob >= :yearFrom and yob <= :yearTo", nativeQuery = true)
     List<Applicant> getByAgeRange(@Param("yearTo") int yearTo, @Param("yearFrom") int yearFrom);
