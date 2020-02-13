@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("jobOffer")
+@RequestMapping("jobOffers")
 public class JobOfferController {
     private JobOfferService jobOfferService;
     private JobOffersReader jobOffersReader;
@@ -41,7 +41,7 @@ public class JobOfferController {
      * private List<Skill> skills;) to get data for a new JobOffer.
      * @return the new JobOffer
      */
-    @PostMapping("add")
+    @PostMapping("jobOffer/add")
     public JobOffer addJobOffer(@RequestBody JobOfferDto jobOfferDto){
         return jobOfferService.addJobOffer(jobOfferDto);
     }
@@ -60,7 +60,7 @@ public class JobOfferController {
      * PUT endpoint which set a specific JobOffer to inactive status.
      * @param id Integer which represents the id of a specific JobOffer.
      */
-    @PutMapping("{id}/inactive")
+    @PutMapping("jobOffer/{id}/inactive")
     public void setInactive(@PathVariable int id){
         jobOfferService.setJobOfferInactive(id);
     }
@@ -70,7 +70,7 @@ public class JobOfferController {
      * @param id Integer which represents the id of a specific existed JobOffer
      * @return A JobOfferObject
      */
-    @GetMapping("id/{id}")
+    @GetMapping("jobOffer/id/{id}")
     public JobOffer getJobOffer(@PathVariable int id) {
         return jobOfferService.getJobOfferById(id);
     }
@@ -83,7 +83,7 @@ public class JobOfferController {
      * @param id Integer which represents a specific existed JobOffer.
      * @return
      */
-    @PutMapping("{id}/update")
+    @PutMapping("jobOffer/{id}/update")
     public JobOffer updateJobOffer(@RequestBody JobOfferDto jobOfferDto,
                                    @PathVariable int id){
         return jobOfferService.updateJobOffer(id, jobOfferDto);

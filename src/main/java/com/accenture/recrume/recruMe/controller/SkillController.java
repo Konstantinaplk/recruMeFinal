@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("skill")
+@RequestMapping("skills")
 public class SkillController {
     private SkillService skillService;
     private SkillsReader skillsReader;
@@ -37,7 +37,7 @@ public class SkillController {
      * @param skillDto Dto SkillObject (fields: String name)
      *                 to get data from a new Skill.
      */
-    @PostMapping("add")
+    @PostMapping("skill/add")
     public void addSkill(@RequestBody SkillDto skillDto){
         skillService.addSkill(skillDto);
     }
@@ -47,7 +47,7 @@ public class SkillController {
      * deleted from the Skill Table.
      * @param name String which represents the name of a skill
      */
-    @PostMapping("delete")
+    @PostMapping("skill/delete")
     public void deleteSkill(@RequestBody String name){
         skillService.deleteSkill(name);
     }
@@ -58,7 +58,7 @@ public class SkillController {
      * @param id Integer which represents the id of an existed skill
      * @param skillDto which represents a Dto skillObject (fields: name)
      */
-    @PutMapping("{id}")
+    @PutMapping("skill/{id}")
     public void updateSkill(@PathVariable int id,
                             @RequestBody SkillDto skillDto){
         skillService.updateSkill(id, skillDto);

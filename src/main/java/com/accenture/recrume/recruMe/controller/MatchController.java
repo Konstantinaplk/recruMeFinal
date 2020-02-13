@@ -33,7 +33,6 @@ public class MatchController {
 
     /**
      * PUT endpoint which deletes a certain matching softly, defining matchStatus deleted.
-     *
      * @param matchId Integer which refers to the Id of the certain match
      * @throws MatchNotFoundException when the certain match doesn't exist.
      */
@@ -44,7 +43,6 @@ public class MatchController {
 
     /**
      * PUT endpoint which finalizes the Status a certain match using the Id of this match.
-     *
      * @param matchId Integer which refers to the Id of the certain matching.
      * @throws MatchNotFoundException when the certain match doesn't exist.
      */

@@ -108,7 +108,6 @@ public class MatchService {
         return match;
     }
 
-
     /**
      * Check if each job offer can have an automatic match, which means that all job skills fits to an applicants skills.
      * If it does, it calls the checkForAutomaticMatch otherwise it catches an exception.

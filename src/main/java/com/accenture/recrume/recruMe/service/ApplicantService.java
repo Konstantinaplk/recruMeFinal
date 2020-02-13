@@ -1,6 +1,7 @@
 package com.accenture.recrume.recruMe.service;
 
 import com.accenture.recrume.recruMe.dtos.ApplicantDto;
+import com.accenture.recrume.recruMe.dtos.SkillDto;
 import com.accenture.recrume.recruMe.model.*;
 import com.accenture.recrume.recruMe.repository.AppSkillsRepository;
 import com.accenture.recrume.recruMe.repository.ApplicantsRepository;
@@ -161,6 +162,17 @@ public class ApplicantService {
         return applicantList;
     }
 
-
-
+    /**
+     * Reads an other Skill from frontend to update a Applicant Object and restore in it Applicant table.
+     * @param skillDto Dto Skill Object to get the new Skill to replace the old.
+     * @param id Integer which represents the id of a Applicant
+     * @param name The name of the existing Skill, which is going to change.
+     */
+    public void updateApplicantSkill(SkillDto skillDto, int id, String name) {
+            Skill skill = skillsRepo.findSkillByName(name);
+            AppSkill appSkill = appSkillsRepo.getAppSkill(id, skill.getId());
+            skillService.skillExist(skillDto.getName());
+            appSkill.setSkill(skillsRepo.findSkillByName(skillDto.getName()));
+            appSkillsRepo.save(appSkill);
+    }
 }

@@ -31,7 +31,6 @@ public class SkillService {
 
     /**
      * Read one new skill from the frondend and store it in Skill table.
-     *
      * @param skillDto Dto object to get data from a new Skill.
      * @return The skill stored in db.
      */
@@ -42,8 +41,7 @@ public class SkillService {
     }
 
     /**
-     * Read a name skill from the frondend and delete it from Skill table.
-     *
+     * Read a name skill from the frontend and delete it from Skill table.
      * @param name String of the skill name.
      */
     public void deleteSkill(String name) {

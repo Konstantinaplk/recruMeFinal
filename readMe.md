@@ -139,7 +139,6 @@ localhost:8080/match/{matchId}/delete
 localhost:8080/match/{matchId}/finalize
 ```
 
-
 ###Prerequisites
 * Java (version 1.8)
 * Microsoft SqlServer (version 2019)

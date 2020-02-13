@@ -1,6 +1,7 @@
 package com.accenture.recrume.recruMe.controller;
 
 import com.accenture.recrume.recruMe.dtos.ApplicantDto;
+import com.accenture.recrume.recruMe.dtos.SkillDto;
 import com.accenture.recrume.recruMe.model.Applicant;
 import com.accenture.recrume.recruMe.reader.ApplicantsReader;
 import com.accenture.recrume.recruMe.service.ApplicantService;
@@ -59,7 +60,7 @@ public class ApplicantController {
      *                     to get data from frontend for a new Applicant.
      * @return the new Applicant
      */
-    @PostMapping("add")
+    @PostMapping("applicant/add")
     public Applicant addApplicant(@RequestBody ApplicantDto applicantDto){
         return applicantService.addApplicant(applicantDto);
     }
@@ -68,7 +69,7 @@ public class ApplicantController {
      * PUT endpoint which set a specific Applicant to inactive status.
      * @param id Integer which represents the id of a specific Applicant.
      */
-    @PutMapping("{id}/inactive")
+    @PutMapping("applicant/{id}/inactive")
     public void setInactive(@PathVariable int id){
         applicantService.setApplicantInactive(id);
     }
@@ -83,7 +84,7 @@ public class ApplicantController {
         return applicantService.getByRegion(region);
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("applicant/id/{id}")
     public Applicant getApplicant(@PathVariable int id) {
         return applicantService.getApplicantById(id);
     }
@@ -96,7 +97,7 @@ public class ApplicantController {
      * to get data for update a Applicant.
      * @param id Integer which represents a specific existed Applicant.
      */
-    @PutMapping("{id}/update")
+    @PutMapping("applicant/{id}/update")
     public void updateApplicant(@RequestBody ApplicantDto applicantDto,
                                       @PathVariable int id){
         applicantService.updateApplicant(id, applicantDto);
@@ -129,6 +130,19 @@ public class ApplicantController {
     @GetMapping("skill/{skillName}")
     public List<Applicant> getApplicantsBySkill(@PathVariable String skillName){
         return applicantService.getApplicantsBySkill(skillName);
+    }
+
+    /**
+     * PUT endpoint which updates the skills of a specific Applicant, found
+     * by its id and updates fields by Dto Skill Object.
+     * @param skillDto Dto Skill Object (private String name) to get data for update a Applicant.
+     * @param id Integer which represents a specific existed Applicant.
+     * @param name String which represents the existed skill which is going to change.
+     */
+    @PutMapping("applicant/{id}/updateSkill/{name}")
+    public void updateApplicantSkill(@RequestBody SkillDto skillDto,
+                                    @PathVariable int id, @PathVariable String name){
+        applicantService.updateApplicantSkill(skillDto, id, name);
     }
 
 
