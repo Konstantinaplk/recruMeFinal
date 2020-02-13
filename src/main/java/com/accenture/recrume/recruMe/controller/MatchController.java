@@ -23,7 +23,7 @@ public class MatchController {
 
     /**
      * POST endpoint which adds a manual, unfinalized match of an applicant and a jobOffer in Match table.
-     * @param appId      Integer which refers to an applicant's id.
+     * @param appId Integer which refers to an applicant's id.
      * @param jobOfferId Integer which refers to an jobOffer's id.
      */
     @PostMapping("appId/{appId}/jobOffer/{jobOfferId}")
