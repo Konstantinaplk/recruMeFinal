@@ -15,6 +15,6 @@ public interface AppSkillsRepository extends PagingAndSortingRepository<AppSkill
     @Query (value = "select top 1 * from app_skill where skill_id=:skillId", nativeQuery = true)
     AppSkill skillExists(@Param("skillId") int skillId);
 
-    @Query(value = "select applicant_id from app_skill where skill_id=:idSkill")
-    List<Integer> getApplicantBySkill(int id);
+    @Query(value = "select applicant_id from app_skill where skill_id=:idSkill", nativeQuery = true)
+    List<Integer> getApplicantBySkill(@Param("idSkill") int id);
 }

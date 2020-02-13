@@ -97,7 +97,7 @@ public class MatchService {
      * @param matchId Integer which refers to the Id of a certain match.
      * @throws MatchNotFoundException when match doesn't exist.
      */
-    public void finalizeMatch(int matchId) throws MatchNotFoundException {
+    public Match finalizeMatch(int matchId) throws MatchNotFoundException {
         Match match = matchesRepo.getMatchById(matchId);
         if (match == null) {
             throw new MatchNotFoundException("There is no match with this Id");
@@ -105,6 +105,7 @@ public class MatchService {
         match.setMatchStatus(MatchStatus.FINALIZED);
         match.setDateSubmitted(GregorianCalendar.getInstance().getTimeInMillis());
         matchesRepo.save(match);
+        return match;
     }
 
 

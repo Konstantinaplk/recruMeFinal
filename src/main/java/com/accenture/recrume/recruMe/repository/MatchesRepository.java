@@ -24,6 +24,6 @@ public interface MatchesRepository extends JpaRepository<Match, Integer> {
     @Query (value = "select * from Match where match_status = 1 order by date_submitted desc", nativeQuery = true)
     List<Match> getOrderedMatchesByDate();
 
-    @Query (value = "select * from Match where applicant_id=:appId and match_status!=2", nativeQuery = true)
+    @Query (value = "select top 1 * from Match where applicant_id=:appId and match_status!=2", nativeQuery = true)
     Match getMatchByAppId(@Param("appId") int appId);
 }

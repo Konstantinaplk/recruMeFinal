@@ -1,6 +1,7 @@
 package com.accenture.recrume.recruMe.service;
 
 import com.accenture.recrume.recruMe.exception.MatchException;
+import com.accenture.recrume.recruMe.exception.MatchNotFoundException;
 import com.accenture.recrume.recruMe.model.*;
 import com.accenture.recrume.recruMe.repository.*;
 import lombok.Data;
@@ -57,33 +58,20 @@ class MatchServiceTest {
         match.setJobOffer(jobOffer);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void addManualMatch() throws MatchException {
         assertEquals(match.getApplicant(), matchService.addManualMatch(3, 1).getApplicant());
     }
 
-//    @Test
-//    void deleteMatch() {
-//        assertEquals(match.getMatchStatus(), matchService.deleteMatch(matchesRepo.getMatchByAppId(applicant.getId()).getMatchStatus()) );
-//    }
-
     @Test
-    void finalizeMatch() {
+    void deleteMatch() throws MatchNotFoundException {
+        match.setMatchStatus(MatchStatus.DELETED);
+        assertEquals(match.getMatchStatus(), matchService.deleteMatch(matchesRepo.getMatchByAppId(applicant.getId()).getId()).getMatchStatus() );
     }
 
     @Test
-    void createAutomaticMatches() {
-    }
-
-    @Test
-    void viewProposedUnfinalizdMatches() {
-    }
-
-    @Test
-    void getOrderedMatchesByDate() {
+    void finalizeMatch() throws MatchNotFoundException {
+        match.setMatchStatus(MatchStatus.FINALIZED);
+        assertEquals(match.getMatchStatus(), matchService.finalizeMatch(matchesRepo.getMatchByAppId(applicant.getId()).getId()).getMatchStatus() );
     }
 }
