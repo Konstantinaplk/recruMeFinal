@@ -4,6 +4,7 @@ import com.accenture.recrume.model.*;
 import com.accenture.recrume.repository.AppSkillsRepository;
 import com.accenture.recrume.repository.ApplicantsRepository;
 import com.accenture.recrume.repository.SkillsRepository;
+import com.accenture.recrume.service.SkillService;
 import lombok.Data;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -32,6 +33,8 @@ public class ApplicantsReader {
     private SkillsRepository skillsRepo;
     @Autowired
     private AppSkillsRepository appSkillsRepo;
+    @Autowired
+    private SkillService skillService;
 
     private Sheet datatypeSheet;
     private List<Applicant> applicants = new ArrayList<>();
@@ -45,19 +48,23 @@ public class ApplicantsReader {
 
     private Applicant createObject(Row row) {
         Applicant applicant = new Applicant();
-        AppSkill appSkill = new AppSkill();
+//        AppSkill appSkill = new AppSkill();
         Iterator<Cell> cellIterator = row.iterator();
         applicant.setFirstName(cellIterator.next().getStringCellValue());
         applicant.setLastName(cellIterator.next().getStringCellValue());
         applicant.setAddress(cellIterator.next().getStringCellValue());
         applicant.setRegion(Region.valueOf(cellIterator.next().getStringCellValue()));
+        applicant.setStatus(Status.ACTIVE);
         applicant.setEducationLevel(EducationLevel.valueOf(cellIterator.next().getStringCellValue()));
         applicant.setProfessionalLevel(ProfessionalLevel.valueOf(cellIterator.next().getStringCellValue()));
         applicant.setYob(0);
         applicantsRepo.save(applicant);
         while (cellIterator.hasNext())
         {
-            appSkill.setSkill(skillsRepo.findSkillByName(cellIterator.next().getStringCellValue()));
+            AppSkill appSkill = new AppSkill();
+            Skill skill = new Skill(cellIterator.next().getStringCellValue());
+            skillService.skillExist(skill.getName());
+            appSkill.setSkill(skillsRepo.findSkillByName(skill.getName()));
             appSkill.setApplicant(applicant);
             appSkillsRepo.save(appSkill);
         }
